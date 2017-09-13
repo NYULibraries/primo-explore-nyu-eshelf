@@ -1,0 +1,22 @@
+{
+  "name": "primo-explore-nyu-eshelf",
+  "version": "1.0.0",
+  "description": "ExLibris Primo New UI plugin for adding custom NYU E-Shelf functionality",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nyulibraries/primo-explore-nyu-eshelf.git"
+  },
+  "keywords": [
+    "primo-explore"
+  ],
+  "author": "Barnaby Alter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nyulibraries/primo-explore-nyu-eshelf/issues"
+  },
+  "homepage": "https://github.com/nyulibraries/primo-explore-nyu-eshelf#readme"
+}
