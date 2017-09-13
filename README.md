@@ -20,29 +20,29 @@ Add custom NYU E-Shelf functionality.
 1. Assuming you've installed and are using [primo-explore-devenv](https://github.com/ExLibrisGroup/primo-explore-devenv).
 
 2. Navigate to your template/central package root directory. For example:
-  ```
-  cd primo-explore/custom/MY_VIEW_ID
-  ```
+    ```
+    cd primo-explore/custom/MY_VIEW_ID
+    ```
 3. If you do not already have a package.json file in this directory, create one:
-  ```
-  npm init -y
-  ```
+    ```
+    npm init -y
+    ```
 4. Install this package:
-  ```
-  npm install primo-explore-nyu-eshelf --save-dev
-  ```
+    ```
+    npm install primo-explore-nyu-eshelf --save-dev
+    ```
 
 ## Usage
 
 Once installed, inject `nyuEshelf` as a dependency:
 
-```
+```js
 let app = angular.module('viewCustom', ['nyuEshelf'])
 ```
 
 **Note:** If you're using the --browserify build option, you will need to first import the module with:
 
-```
+```js
 import 'primo-explore-nyu-eshelf';
 ```
 
@@ -50,7 +50,7 @@ import 'primo-explore-nyu-eshelf';
 
 To enable the checkbox after the availability line configure the following component:
 
-```
+```js
 app
   .component('prmSearchResultAvailabilityLineAfter', {
     template: '<nyu-eshelf></nyu-eshelf>'
@@ -61,7 +61,7 @@ app
 
 To add a link to your external e-Shelf in the toolbar configure the following component:
 
-```
+```js
 app
   .component('prmSearchBookmarkFilterAfter', {
     template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
@@ -72,7 +72,7 @@ app
 
 If you want to fully hide the existing "Saved Records" functionality and exclusively use the custom e-Shelf add the following CSS:
 
-```
+```js
 // Disable built in e-shelf
 .pin-button,
 prm-favorites-labels,
@@ -106,7 +106,7 @@ You'll need to configure the module by passing it an object as an angular `const
 
 The below are the defaults, they should be updated for production:
 
-```
+```js
 app.constant('nyuEshelf', {
   myEshelf: 'My e-Shelf',
   guestEshelf: 'Guest e-Shelf',
