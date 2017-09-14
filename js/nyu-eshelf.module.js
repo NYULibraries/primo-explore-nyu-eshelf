@@ -11,6 +11,7 @@ angular.module('nyuEshelf', [])
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
   })
   .constant('nyuEshelfConfigDefaults', {
+    myEshelfButtonClasses: 'button-over-dark',
     myEshelf: 'My e-Shelf',
     guestEshelf: 'Guest e-Shelf',
     addToEshelf: "Add to e-Shelf",
@@ -165,6 +166,7 @@ angular.module('nyuEshelf', [])
   .controller('nyuEshelfToolbarController', ['nyuEshelfConfigService', '$scope', '$filter', function(config, $scope, $filter) {
     this.$onInit = function() {
       $scope.loggedIn = !this.prmExploreMain.skipToService.userSessionManagerService.isGuest();
+      $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     };
     $scope.openEshelf = function() {
       window.open($filter('translate')('urls.eshelf'), '_blank');
@@ -176,7 +178,7 @@ angular.module('nyuEshelf', [])
     require: {
       prmExploreMain: '^prmExploreMain'
     },
-    template: '<button class="button-with-icon button-over-dark zero-margin md-button md-primoExplore-theme md-ink-ripple nyu-eshelf-toolbar" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
+    template: '<button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{myEshelfButtonClasses}}" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
                 '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText()}}"></prm-icon>'+
                 '<span class="hide-xs">{{elementText()}}</span>'+
               '</button>'

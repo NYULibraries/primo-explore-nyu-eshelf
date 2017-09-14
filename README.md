@@ -89,6 +89,7 @@ You'll need to configure the module by passing it an object as an angular `const
 
 | name | type | usage |
 |------|-------------|--------|
+| `myEshelfButtonClasses` | string | css classes for the 'my e-shelf' button in the toolbar |
 | `myEshelf` | string | text for toolbar link when user is signed in |
 | `guestEshelf` | string | text for toolbar link when user is signed out |
 | `addToEshelf` | string | text for checkbox label when record is not in e-shelf |
@@ -108,6 +109,7 @@ The below are the defaults, they should be updated for production:
 
 ```js
 app.constant('nyuEshelf', {
+  myEshelfButtonClasses: 'button-over-dark',
   myEshelf: 'My e-Shelf',
   guestEshelf: 'Guest e-Shelf',
   addToEshelf: "Add to e-Shelf",
