@@ -107,11 +107,11 @@ angular.module('nyuEshelf', [])
   }])
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfigService', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     this.$onInit = function() {
-      $scope.externalId = this.prmSearchResultAvailabilityLine.result.pnx.control.recordid[0];
-      $scope.elementId = "eshelf_" + $scope.externalId + ((this.prmSearchResultAvailabilityLine.isFullView) ? "_full" : "_brief");
+      $scope.externalId = this.prmSearchResultAvailabilityLineCtrl.result.pnx.control.recordid[0];
+      $scope.elementId = "eshelf_" + $scope.externalId + ((this.prmSearchResultAvailabilityLineCtrl.isFullView) ? "_full" : "_brief");
 
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
-      nyuEshelfService.loggedIn = !this.prmBriefResultContainer.userSessionManagerService.isGuest();
+      nyuEshelfService.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       nyuEshelfService.checkEshelf($scope.externalId);
     };
 
@@ -155,8 +155,8 @@ angular.module('nyuEshelf', [])
   .component('nyuEshelf', {
     controller: 'nyuEshelfController',
     require: {
-      prmSearchResultAvailabilityLine: '^prmSearchResultAvailabilityLine',
-      prmBriefResultContainer: '^prmBriefResultContainer'
+      prmSearchResultAvailabilityLineCtrl: '^prmSearchResultAvailabilityLine',
+      primoExploreCtrl: '^primoExplore'
     },
     template: '<div class="nyu-eshelf"><button class="neutralized-button md-button md-primoExplore-theme" aria-label="Toggle in e-Shelf">' +
       '<input ng-checked="inEshelf()" ng-disabled="disabled()" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
@@ -165,7 +165,7 @@ angular.module('nyuEshelf', [])
   })
   .controller('nyuEshelfToolbarController', ['nyuEshelfConfigService', '$scope', '$filter', function(config, $scope, $filter) {
     this.$onInit = function() {
-      $scope.loggedIn = !this.prmExploreMain.skipToService.userSessionManagerService.isGuest();
+      $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     };
     $scope.openEshelf = function() {
@@ -176,7 +176,7 @@ angular.module('nyuEshelf', [])
   .component('nyuEshelfToolbar', {
     controller: 'nyuEshelfToolbarController',
     require: {
-      prmExploreMain: '^prmExploreMain'
+      primoExploreCtrl: '^primoExplore'
     },
     template: '<button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{myEshelfButtonClasses}}" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
                 '<prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText()}}"></prm-icon>'+
