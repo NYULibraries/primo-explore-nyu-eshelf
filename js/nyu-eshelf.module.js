@@ -23,18 +23,21 @@ angular.module('nyuEshelf', [])
     error: "Could not connect to e-Shelf",
     pdsUrl: {
       base: 'https://pdsdev.library.nyu.edu/pds',
-      callingSystem: 'primo',
-      institution: 'NYU-NUI'
+      callingSystem: 'primo'
     },
-    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
+    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
+    institution: 'NYU'
   })
   .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', function(defaults, config) {
     // Merge default config values with local configs
     // Note: Be aware that angular.merge is deprecated and will not work in > 2
     return angular.merge(defaults, config);
   }])
-  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', (config, $http) => {
+  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', '$filter', (config, $http, $filter) => {
     return {
+      translate: function(original) {
+        return original.replace(/\{(.+)\}/g, (match, p1) => $filter('translate')(p1));
+      },
       initialized: false,
       csrfToken: '',
       loggedIn: false,
@@ -124,7 +127,7 @@ angular.module('nyuEshelf', [])
     };
 
     $scope.pdsUrl = function() {
-      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.pdsUrl.institution + "&url=http://bobcatdev.library.nyu.edu:80/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.institution + "&url=http://bobcatdev.library.nyu.edu:80/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     };
 
     $scope.setElementText = function() {
@@ -163,13 +166,16 @@ angular.module('nyuEshelf', [])
       '<label for="{{ elementId }}"><span ng-bind-html="setElementText()"></span></label>' +
     '</button></div>'
   })
-  .controller('nyuEshelfToolbarController', ['nyuEshelfConfigService', '$scope', '$filter', function(config, $scope, $filter) {
+  .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', '$filter', function(nyuEshelfService, config, $scope, $filter) {
     this.$onInit = function() {
       $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     };
+    $scope.eshelfUrl = function() {
+      return config.eshelfBaseUrl + "/?institution=" + config.institution;
+    };
     $scope.openEshelf = function() {
-      window.open($filter('translate')('urls.eshelf'), '_blank');
+      window.open(this.eshelfUrl(), '_blank');
     };
     $scope.elementText = () => ($scope.loggedIn) ? config.myEshelf : config.guestEshelf;
   }])
