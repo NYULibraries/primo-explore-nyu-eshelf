@@ -72,7 +72,7 @@ app
 
 If you want to fully hide the existing "Saved Records" functionality and exclusively use the custom e-Shelf add the following CSS:
 
-```js
+```css
 // Disable built in e-shelf
 .pin-button,
 prm-favorites-labels,
@@ -80,6 +80,18 @@ prm-search-bookmark-filter a[aria-label='Go to my favorites'],
 prm-search-bookmark-filter a[aria-label="nui.favorites.goFavorites.tooltip"],
 prm-favorites md-tab-item:first-child {
   display: none !important;
+}
+```
+
+### Stylize header button to look like existing buttons
+
+```css
+prm-search-bookmark-filter-after button.search-bookmark-filter-item {
+  border-radius: 20px !important;
+  min-width: 40px !important;
+}
+prm-search-bookmark-filter-after button.search-bookmark-filter-item:hover {
+  box-shadow: 0 1px 0 #888888;
 }
 ```
 
