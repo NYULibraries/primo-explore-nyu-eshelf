@@ -136,6 +136,7 @@ app.constant('nyuEshelf', {
     callingSystem: 'primo',
     institution: 'NYU-NUI'
   },
+  bobcatBaseUrl: 'http://bobcatdev.library.nyu.edu:80',
   eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
 });
 ```

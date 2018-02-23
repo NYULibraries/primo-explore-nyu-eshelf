@@ -30,6 +30,7 @@ angular
       base: 'https://pdsdev.library.nyu.edu/pds',
       callingSystem: 'primo'
     },
+    bobcatBaseUrl: 'http://bobcatdev.library.nyu.edu:80',
     eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
     institution: 'NYU'
   })
@@ -154,7 +155,7 @@ angular
     };
     // Build the pds url
     $scope.pdsUrl = function() {
-      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.institution + "&url=http://bobcatdev.library.nyu.edu:80/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.institution + "&url=" + config.bobcatBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
