@@ -84,7 +84,7 @@ angular
       // Check eshelf for existing externalId
       checkEshelf: function(externalId) {
         // Use eshelf API to check if record with externalId is in current user's eshelf
-        let url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
+        let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
         let svc = this; // For maintaining service scoping in the function below
         $http.get(url).then(
             function(response){
