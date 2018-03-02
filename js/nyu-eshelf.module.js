@@ -26,36 +26,46 @@ angular
     adding: "Adding to e-Shelf...",
     deleting: "Removing from e-Shelf...",
     error: "Could not connect to e-Shelf",
-    pdsUrl: {
-      base: 'https://pdsdev.library.nyu.edu/pds',
-      callingSystem: 'primo'
+    defaultUrls: {
+      pdsUrl: {
+        base: 'https://pdsdev.library.nyu.edu/pds',
+        callingSystem: 'primo'
+      },
+      eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
+      institution: 'NYU'
     },
-    bobcatBaseUrl: 'http://bobcatdev.library.nyu.edu:80',
-    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
-    institution: 'NYU'
+    "bobcat.library.nyu.edu": {
+      pdsUrl: {
+        base: 'https://pds.library.nyu.edu/pds',
+        callingSystem: 'primo'
+      },
+      eshelfBaseUrl: 'https://eshelf.library.nyu.edu',
+      institution: 'NYU'
+    }
   })
   // Reuseable factory for setting config
-  .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', function(defaults, config) {
+  .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', '$location', function(defaults, config, $location) {
     // Merge default config values with local configs
     // Note: Be aware that angular.merge is deprecated and will not work in > 2
-    return angular.merge(defaults, config);
+    let mergedConfig = angular.merge(defaults, config);
+    // Set primoBaseUrl for pds return script based on current instance
+    mergedConfig['primoBaseUrl'] = $location.protocol() + "://" + $location.host() + ":" + $location.port();
+    // Setup the environment config based on current host matching config obj
+    mergedConfig['envConfig'] = (typeof mergedConfig[$location.host()] === 'undefined') ? mergedConfig.defaultUrls : mergedConfig[$location.host()];
+    return mergedConfig;
   }])
   // Reusable factory for initiating an 'add to eshelf' input element
-  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', '$filter', (config, $http, $filter) => {
+  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', (config, $http) => {
     return {
-      // Use the translate filter to get Primo Back Office values
-      translate: function(original) {
-        return original.replace(/\{(.+)\}/g, (match, p1) => $filter('translate')(p1));
-      },
       initialized: false, // Is the csrfToken initialized on first load of the page?
       csrfToken: '', // Storage spot for the csrfToken
-      loggedIn: false, // Are we logged in?
+      loggedIn: false, // Are we logged in?,
       // Make an initial call to eshelf to find out if any of the current
       // records are already in our eshelf and geet the first csrfToken
       initEshelf: function() {
-        // Eshelf API to setup csrfToken and avoid that pesky cache
-        let url = config.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
         let svc = this; // For maintaining service scoping in the function below
+        // Eshelf API to setup csrfToken and avoid that pesky cache
+        let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
         // Get the csrfToken already
         $http.get(url).then(
           function(response){
@@ -102,7 +112,7 @@ angular
         let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
         let request = {
           method: httpMethod.toUpperCase(),
-          url: config.eshelfBaseUrl + "/records.json",
+          url: config.envConfig.eshelfBaseUrl + "/records.json",
           headers: headers,
           data: data
         }
@@ -155,7 +165,7 @@ angular
     };
     // Build the pds url
     $scope.pdsUrl = function() {
-      return config.pdsUrl.base + "?func=load-login&calling_system=" + config.pdsUrl.callingSystem + "&institute=" + config.institution + "&url=" + config.bobcatBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+      return config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
@@ -200,13 +210,13 @@ angular
     '</div>'
   })
   // Controller for topbar 'my eshelf' button
-  .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', '$filter', function(nyuEshelfService, config, $scope, $filter) {
+  .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', function(nyuEshelfService, config, $scope) {
     this.$onInit = function() {
       $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     };
     $scope.eshelfUrl = function() {
-      return config.eshelfBaseUrl + "/?institution=" + config.institution;
+      return config.envConfig.eshelfBaseUrl + "/?institution=" + config.institution;
     };
     $scope.openEshelf = function() {
       window.open(this.eshelfUrl(), '_blank');
