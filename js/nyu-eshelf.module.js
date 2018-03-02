@@ -216,7 +216,7 @@ angular
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     };
     $scope.eshelfUrl = function() {
-      return config.envConfig.eshelfBaseUrl + "/?institution=" + config.institution;
+      return config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
     };
     $scope.openEshelf = function() {
       window.open(this.eshelfUrl(), '_blank');
