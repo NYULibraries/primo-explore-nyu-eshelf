@@ -129,26 +129,26 @@ Assuming a dev (default), QA and production environment you would set these valu
   defaultUrls: {
     pdsUrl: {
       base: 'https://dev-pds.host.edu/pds',
-      callingSystem: 'primo',
-      institution: 'PRIMO'
+      callingSystem: 'primo'
     },
-    eshelfBaseUrl: 'https://dev-eshelf.host.edu'
+    eshelfBaseUrl: 'https://dev-eshelf.host.edu',
+    institution: 'PRIMO'
   },
   "qa-primo.host.edu": {
     pdsUrl: {
       base: 'https://qa-pds.host.edu/pds',
-      callingSystem: 'primo',
-      institution: 'PRIMO'
+      callingSystem: 'primo'
     },
-    eshelfBaseUrl: 'https://qa-eshelf.host.edu'
+    eshelfBaseUrl: 'https://qa-eshelf.host.edu',
+    institution: 'PRIMO'
   },
   "production-primo.host.edu": {
     pdsUrl: {
       base: 'https://production-pds.host.edu/pds',
-      callingSystem: 'primo',
-      institution: 'PRIMO'
+      callingSystem: 'primo'
     },
-    eshelfBaseUrl: 'https://production-eshelf.host.nyu'
+    eshelfBaseUrl: 'https://production-eshelf.host.nyu',
+    institution: 'PRIMO'
   }
 }
 ```
