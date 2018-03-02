@@ -111,9 +111,51 @@ You'll need to configure the module by passing it an object as an angular `const
 | `adding` | string | text for checkbox label when adding to e-shelf |
 | `deleting` | string | text for checkbox label when removing from e-shelf |
 | `error` | string | text for checkbox label when there is an error |
+
+#### URL config
+
+This module needs to build the PDS login URL as well as point to the correct E-Shelf application based on environment. The properties that need to be configured within either `defaultUrls` or an environment-specific `{hostname}` property are:
+
+| name | type | usage |
+|------|-------------|--------|
 | `pdsUrl` | object | to how to build the login PDS url with three values: `base`, `callingSystem`, `institution` |
 | `eshelfBaseUrl` | string | base url for the external e-shelf |
 
+Assuming a dev (default), QA and production environment you would set these values as such:
+
+```javascript
+{
+  ...
+  defaultUrls: {
+    pdsUrl: {
+      base: 'https://dev-pds.host.edu/pds',
+      callingSystem: 'primo',
+      institution: 'PRIMO'
+    },
+    eshelfBaseUrl: 'https://dev-eshelf.host.edu'
+  },
+  "qa-primo.host.edu": {
+    pdsUrl: {
+      base: 'https://qa-pds.host.edu/pds',
+      callingSystem: 'primo',
+      institution: 'PRIMO'
+    },
+    eshelfBaseUrl: 'https://qa-eshelf.host.edu'
+  },
+  "production-primo.host.edu": {
+    pdsUrl: {
+      base: 'https://production-pds.host.edu/pds',
+      callingSystem: 'primo',
+      institution: 'PRIMO'
+    },
+    eshelfBaseUrl: 'https://production-eshelf.host.nyu'
+  }
+}
+```
+
+To test locally you could also setup a `"localhost"` property that would work similarly.
+
+**Note**: You may ask why didn't we just use Back Office values to populate based on environment. That would be ideal. The answer is that we don't have access to those translations until rending the component, but we need to have access to the correct E-Shelf URL before then in order to initialize the user session and the user's existing records.
 
 ### Example
 
@@ -131,12 +173,21 @@ app.constant('nyuEshelf', {
   adding: "Adding to e-Shelf...",
   deleting: "Removing from e-Shelf...",
   error: "Could not connect to e-Shelf",
-  pdsUrl: {
-    base: 'https://pdsdev.library.nyu.edu/pds',
-    callingSystem: 'primo',
-    institution: 'NYU-NUI'
+  defaultUrls: {
+    pdsUrl: {
+      base: 'https://dev-pds.host.edu/pds',
+      callingSystem: 'primo',
+      institution: 'PRIMO'
+    },
+    eshelfBaseUrl: 'https://dev-eshelf.host.edu'
   },
-  bobcatBaseUrl: 'http://bobcatdev.library.nyu.edu:80',
-  eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu'
+  "production-primo.host.edu": {
+    pdsUrl: {
+      base: 'https://production-pds.host.edu/pds',
+      callingSystem: 'primo',
+      institution: 'PRIMO'
+    },
+    eshelfBaseUrl: 'https://production-eshelf.host.nyu'
+  }
 });
 ```
