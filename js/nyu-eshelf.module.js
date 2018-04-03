@@ -214,6 +214,7 @@ angular
     this.$onInit = function() {
       $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
+      $scope.elementText = $scope.loggedIn ? config.myEshelf : config.guestEshelf;
     };
     $scope.eshelfUrl = function() {
       return config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
@@ -221,7 +222,6 @@ angular
     $scope.openEshelf = function() {
       window.open(this.eshelfUrl(), '_blank');
     };
-    $scope.elementText = () => ($scope.loggedIn) ? config.myEshelf : config.guestEshelf;
   }])
   // Setup a new button component to add to the topbar
   .component('nyuEshelfToolbar', {
@@ -229,8 +229,8 @@ angular
     require: {
       primoExploreCtrl: '^primoExplore'
     },
-    template: '<md-button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{myEshelfButtonClasses}}" type="button" aria-label="Go to {{elementText()}}" ng-click="openEshelf()">'+
-                '<md-tooltip md-direction="bottom" md-delay="500">Go to {{elementText()}}</md-tooltip><prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText()}}"></prm-icon>'+
-                '<span class="hide-xs">{{elementText()}}</span>'+
+    template: '<md-button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{myEshelfButtonClasses}}" type="button" aria-label="Go to {{ elementText }}" ng-click="openEshelf()">'+
+                '<md-tooltip md-direction="bottom" md-delay="500">Go to {{ elementText }}</md-tooltip><prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText }}"></prm-icon>'+
+                '<span class="hide-xs">{{ elementText }}</span>'+
               '</md-button>'
   });
