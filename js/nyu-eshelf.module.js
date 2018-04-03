@@ -76,8 +76,8 @@ angular
           },
           // Oops
           function(response){
-            console.log("Error in e-Shelf CORS API");
-            console.log("Response: " + response);
+            console.error("Error in e-Shelf CORS API");
+            console.error("Response: " + response);
           }
         );
       },
@@ -97,7 +97,7 @@ angular
               }
             },
             // Oops, set an error object
-            function(response){
+            function(_response){
               svc[externalId+'_error'] = true;
             }
          );
@@ -109,13 +109,13 @@ angular
           return {};
         }
         // Cors headers
-        let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' }
+        let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' };
         let request = {
           method: httpMethod.toUpperCase(),
           url: config.envConfig.eshelfBaseUrl + "/records.json",
           headers: headers,
           data: data
-        }
+        };
         return request;
       },
       failure: function(response, externalId) {
@@ -185,15 +185,15 @@ angular
       ($scope.inEshelf()) ? $scope.removeFromEshelf() : $scope.addToEshelf();
     };
     // Alias to add
-    $scope.addToEshelf = () => { $scope.toggleInEshelf('post') };
+    $scope.addToEshelf = () => { $scope.toggleInEshelf('post'); };
     // Alias to delete
-    $scope.removeFromEshelf = () => { $scope.toggleInEshelf('delete') };
+    $scope.removeFromEshelf = () => { $scope.toggleInEshelf('delete'); };
     // Wrap the generic request
     $scope.toggleInEshelf = function(httpMethod) {
       $http(nyuEshelfService.generateRequest(httpMethod, $scope.recordData))
         .then(
-          function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId) },
-          function(response) { nyuEshelfService.failure(response, $scope.externalId) }
+          function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId); },
+          function(response) { nyuEshelfService.failure(response, $scope.externalId); }
         );
     };
   }])
