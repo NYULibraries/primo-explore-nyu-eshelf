@@ -3,7 +3,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     reporters: ['spec'],
     browsers: ['PhantomJS'],
-    basePath: './distribution/',
+    basePath: './src/',
     files: [
       'spec/fixtures/**/*.json',
       'node_modules/angular/angular.js',

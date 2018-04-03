@@ -1,8 +1,0 @@
-/* Styles for "My e-shelf" link in top bar navigation */
-prm-topbar prm-search-bookmark-filter-after button.md-button.search-bookmark-filter-item:not(.md-icon-button) {
-  border-radius: 20px;
-  min-width: 40px;
-}
-prm-topbar prm-search-bookmark-filter-after button.md-button.search-bookmark-filter-item:hover {
-  box-shadow: 0 1px 0 #888888;
-}
