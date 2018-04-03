@@ -6,10 +6,10 @@
   "scripts": {
     "test": "karma start --single-run",
     "test:chrome-debugger": "karma start --browsers=Chrome --single-run=false --debug",
-    "copy-css": "cp -a src/css dist",
-    "copy-html": "cp -a src/html dist",
+    "copy-css": "cp -r src/css/ dist/css/",
+    "copy-html": "cp -r src/html/ dist/html/",
     "babel": "babel src --presets babel-preset-es2015 --source-maps --out-dir dist --ignore *.spec.js",
-    "build": "yarn copy-css; yarn copy-html; yarn babel",
+    "build": "yarn babel; yarn copy-css; yarn copy-html",
     "build:watch": "yarn build --watch",
     "prepublish": "yarn build"
   },
