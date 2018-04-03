@@ -144,34 +144,34 @@ angular
   }])
   // Controller for the eshelf input form component
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfigService', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
+    const ctrl = this;
+
     this.$onInit = function() {
       // Primo ID
-      $scope.externalId = this.prmSearchResultAvailabilityLineCtrl.result.pnx.control.recordid[0];
-      $scope.elementId = "eshelf_" + $scope.externalId + ((this.prmSearchResultAvailabilityLineCtrl.isFullView) ? "_full" : "_brief");
+      $scope.externalId = ctrl.prmSearchResultAvailabilityLineCtrl.result.pnx.control.recordid[0];
+      $scope.elementId = "eshelf_" + $scope.externalId + ((ctrl.prmSearchResultAvailabilityLineCtrl.isFullView) ? "_full" : "_brief");
       // JSON that eshelf is expecting
       $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
       // Determine if we're logged into Primo/PDS
-      nyuEshelfService.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
+      nyuEshelfService.loggedIn = !ctrl.primoExploreCtrl.userSessionManagerService.isGuest();
       // Check if this record is in eshelf
       nyuEshelfService.checkEshelf($scope.externalId);
-    };
-    // Determine what text to show if the record is in eshelf based on logged in status
-    $scope.inEshelfText = function() {
-      if (nyuEshelfService.loggedIn) {
-        return config.inEshelf;
-      } else {
-        return config.inGuestEshelf + ((config.loginToSave && config.loginToSave != '') ? " (<a href=\"" + $scope.pdsUrl() + "\">" + config.loginToSave + "</a>)" : '');
-      }
-    };
-    // Build the pds url
-    $scope.pdsUrl = function() {
-      return config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+      // Determine what text to show if the record is in eshelf based on logged in status
+      // Build the pds url
+      $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
+      $scope.inEshelfText = (function() {
+        if (nyuEshelfService.loggedIn) {
+          return config.inEshelf;
+        } else {
+          return config.inGuestEshelf + ((config.loginToSave && config.loginToSave != '') ? " (<a href=\"" + $scope.pdsUrl + "\">" + config.loginToSave + "</a>)" : '');
+        }
+      })();
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
       if (nyuEshelfService[$scope.externalId+'_error']) { return config.error; }
       if (nyuEshelfService[$scope.externalId]) {
-        return ($scope.running) ? config.deleting : $scope.inEshelfText();
+        return ($scope.running) ? config.deleting : $scope.inEshelfText;
       } else {
         return ($scope.running) ? config.adding : config.addToEshelf;
       }
@@ -211,16 +211,15 @@ angular
   })
   // Controller for topbar 'my eshelf' button
   .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', function(nyuEshelfService, config, $scope) {
+
     this.$onInit = function() {
       $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
       $scope.elementText = $scope.loggedIn ? config.myEshelf : config.guestEshelf;
-    };
-    $scope.eshelfUrl = function() {
-      return config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
-    };
-    $scope.openEshelf = function() {
-      window.open(this.eshelfUrl(), '_blank');
+      $scope.eshelfUrl = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
+      $scope.openEshelf = function() {
+        window.open($scope.eshelfUrl, '_blank');
+      };
     };
   }])
   // Setup a new button component to add to the topbar
