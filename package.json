@@ -2,10 +2,16 @@
   "name": "primo-explore-nyu-eshelf",
   "version": "2.0.2",
   "description": "ExLibris Primo New UI plugin for adding custom NYU E-Shelf functionality",
-  "main": "index.js",
+  "main": "./distribution/index.js",
   "scripts": {
     "test": "karma start --single-run",
-    "test:chrome-debugger": "karma start --browsers=Chrome --single-run=false --debug"
+    "test:chrome-debugger": "karma start --browsers=Chrome --single-run=false --debug",
+    "copy-css": "cp -a src/css dist",
+    "copy-html": "cp -a src/html dist",
+    "babel": "babel src --presets babel-preset-es2015 --source-maps --out-dir dist --ignore *.spec.js",
+    "build": "yarn copy-css; yarn copy-html; yarn babel",
+    "build:watch": "yarn build --watch",
+    "prepublish": "yarn build"
   },
   "repository": {
     "type": "git",

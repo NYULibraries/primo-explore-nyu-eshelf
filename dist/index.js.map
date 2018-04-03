@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["require","module","exports"],"mappings":";;AAAAA,QAAQ,2BAAR;AACAC,OAAOC,OAAP,GAAiB,WAAjB","file":"index.js","sourcesContent":["require('./js/nyu-eshelf.module.js')\nmodule.exports = 'nyuEshelf'\n"]}
