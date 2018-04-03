@@ -1,5 +1,5 @@
-import nyuEshelfTemplate from './html/nyuEshelf.html';
-import nyuEshelfToolbarTemplate from './html/nyuEshelfToolbar.html'
+import nyuEshelfTemplate from '../html/nyuEshelf.html';
+import nyuEshelfToolbarTemplate from '../html/nyuEshelfToolbar.html';
 
 angular
   // Name our module
@@ -185,7 +185,7 @@ angular
     };
     // Toggle the bind function on the input element
     $scope.eshelfCheckBoxTrigger = () => {
-      ($scope.inEshelf()) ? $scope.removeFromEshelf() : $scope.addToEshelf();
+      ($scope.inEshelf) ? $scope.removeFromEshelf() : $scope.addToEshelf();
     };
     // Alias to add
     $scope.addToEshelf = () => { $scope.toggleInEshelf('post'); };
