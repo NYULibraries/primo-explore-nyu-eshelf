@@ -1,3 +1,6 @@
+import nyuEshelfTemplate from './html/nyuEshelf.html';
+import nyuEshelfToolbarTemplate from './html/nyuEshelfToolbar.html'
+
 angular
   // Name our module
   .module('nyuEshelf', [])
@@ -166,6 +169,10 @@ angular
           return config.inGuestEshelf + ((config.loginToSave && config.loginToSave != '') ? " (<a href=\"" + $scope.pdsUrl + "\">" + config.loginToSave + "</a>)" : '');
         }
       })();
+      // Disable the input if there is an error or the process is running
+      $scope.disabled = (nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
+      // In eshelf?
+      $scope.inEshelf = (nyuEshelfService[$scope.externalId] == true);
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
@@ -176,10 +183,6 @@ angular
         return ($scope.running) ? config.adding : config.addToEshelf;
       }
     };
-    // Disable the input if there is an error or the process is running
-    $scope.disabled = () => (nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
-    // In eshelf?
-    $scope.inEshelf = () => (nyuEshelfService[$scope.externalId] == true);
     // Toggle the bind function on the input element
     $scope.eshelfCheckBoxTrigger = () => {
       ($scope.inEshelf()) ? $scope.removeFromEshelf() : $scope.addToEshelf();
@@ -204,10 +207,7 @@ angular
       prmSearchResultAvailabilityLineCtrl: '^prmSearchResultAvailabilityLine',
       primoExploreCtrl: '^primoExplore'
     },
-    template: '<div class="nyu-eshelf neutralized-button md-button md-primoExplore-theme">' +
-      '<input ng-checked="inEshelf()" aria-label="Toggle in e-Shelf" ng-disabled="disabled()" id="{{ elementId }}" type="checkbox" data-eshelf-external-id="{{ externalId }}" ng-click="running = true; eshelfCheckBoxTrigger()" >' +
-      '<label for="{{ elementId }}"><span ng-bind-html="setElementText()"></span></label>' +
-    '</div>'
+    template: nyuEshelfTemplate
   })
   // Controller for topbar 'my eshelf' button
   .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', function(nyuEshelfService, config, $scope) {
@@ -228,8 +228,5 @@ angular
     require: {
       primoExploreCtrl: '^primoExplore'
     },
-    template: '<md-button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{myEshelfButtonClasses}}" type="button" aria-label="Go to {{ elementText }}" ng-click="openEshelf()">'+
-                '<md-tooltip md-direction="bottom" md-delay="500">Go to {{ elementText }}</md-tooltip><prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{elementText }}"></prm-icon>'+
-                '<span class="hide-xs">{{ elementText }}</span>'+
-              '</md-button>'
+    template: nyuEshelfToolbarTemplate
   });
