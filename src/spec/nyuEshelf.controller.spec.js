@@ -26,15 +26,16 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
-    $provide.service('nyuEshelfService', () => ({
-      initialized: false,
-      csrfToken: '',
-      loggedIn: false,
-      ...spies
-    }));
-
-    const mockHttp = (request) => new Promise((resolve, reject) => {})
+    const mockHttp = (request) => new Promise((resolve, reject) => {});
     $provide.service('$http', () => mockHttp);
+
+    $provide.service('nyuEshelfService', ($http) => ({
+        initialized: false,
+        csrfToken: '',
+        loggedIn: false,
+        ...spies
+      })
+    );
   }));
 
   let $scope, $componentController;
@@ -42,13 +43,10 @@ describe('nyuEshelfController', () => {
   let nyuEshelfService;
 
   const recordId = 'abcd123';
-  beforeEach(inject(function(_$rootScope_, _$componentController_, _nyuEshelfService_, _$http_) {
+  beforeEach(inject(function(_$rootScope_, _$componentController_, _nyuEshelfService_) {
     $scope = _$rootScope_;
     $componentController = _$componentController_;
     nyuEshelfService = _nyuEshelfService_;
-
-    spies.$http = _$http_;
-    spyOn(spies, '$http');
 
     const primoExploreCtrl = {
       userSessionManagerService: {
@@ -251,7 +249,7 @@ describe('nyuEshelfController', () => {
         expect(spies.generateRequest).toHaveBeenCalledWith("delete", data);
       });
     });
-
+    
   }); // end $scope functions
 
 });
