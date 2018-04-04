@@ -170,9 +170,9 @@ angular
         }
       })();
       // Disable the input if there is an error or the process is running
-      $scope.disabled = (nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
+      $scope.disabled = Boolean(nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
       // In eshelf?
-      $scope.inEshelf = (nyuEshelfService[$scope.externalId] == true);
+      $scope.inEshelf = Boolean(nyuEshelfService[$scope.externalId]);
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
@@ -183,7 +183,7 @@ angular
         return ($scope.running) ? config.adding : config.addToEshelf;
       }
     };
-    // Toggle the bind function on the input element
+    // Toggle the \ function on the input element
     $scope.eshelfCheckBoxTrigger = () => {
       ($scope.inEshelf) ? $scope.removeFromEshelf() : $scope.addToEshelf();
     };
@@ -193,7 +193,9 @@ angular
     $scope.removeFromEshelf = () => { $scope.toggleInEshelf('delete'); };
     // Wrap the generic request
     $scope.toggleInEshelf = function(httpMethod) {
-      $http(nyuEshelfService.generateRequest(httpMethod, $scope.recordData))
+      const request = nyuEshelfService.generateRequest(httpMethod, $scope.recordData);
+      debugger;
+      $http(request)
         .then(
           function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId); },
           function(response) { nyuEshelfService.failure(response, $scope.externalId); }
