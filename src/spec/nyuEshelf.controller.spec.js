@@ -26,6 +26,7 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
+    // mocks http to do nothign to avoid warnings
     const mockHttp = (request) => new Promise((resolve, reject) => {});
     $provide.service('$http', () => mockHttp);
 
@@ -235,6 +236,8 @@ describe('nyuEshelfController', () => {
       it("should use nyuEshelfService.generateRequest method", () => {
         expect(spies.generateRequest).toHaveBeenCalledWith("post", data);
       });
+
+      // TODO: check for calling $http? Having issue with setting up spy correctly
     });
 
     describe("removeFromEshelf", () => {
@@ -248,8 +251,10 @@ describe('nyuEshelfController', () => {
       it("should use nyuEshelfService.generateRequest method", () => {
         expect(spies.generateRequest).toHaveBeenCalledWith("delete", data);
       });
+
+      // TODO: check for calling $http? Having issue with setting up spy correctly
     });
-    
+
   }); // end $scope functions
 
 });
