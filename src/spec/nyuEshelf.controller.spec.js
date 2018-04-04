@@ -10,10 +10,7 @@ describe('nyuEshelfController', () => {
       failure() {},
       success() {}
     };
-    spyOn(spies, 'initEshelf');
     spyOn(spies, 'checkEshelf');
-    spyOn(spies, 'failure');
-    spyOn(spies, 'success');
     spyOn(spies, 'generateRequest').and.returnValue('test');
   });
 
