@@ -19,13 +19,25 @@ describe('nyuEshelf component', () => {
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
-    $provide.service('nyuEshelfConfigService', () => nyuEshelfConfig);
-    $provide.service('nyuEshelfService', () => ({
-      initialized: false,
-      csrfToken: '',
-      loggedIn: false,
-      ...spies
-    }));
+
+        $provide.service('nyuEshelfConfigService', () => {
+          const config = angular.copy(nyuEshelfConfig);
+          config.primoBaseUrl = "http://www.example.com:8080";
+          config.envConfig = config.defaultUrls;
+          return config;
+        });
+
+        // mocks http to do nothign to avoid warnings
+        const mockHttp = (request) => new Promise((resolve, reject) => {});
+        $provide.service('$http', () => mockHttp);
+
+        $provide.service('nyuEshelfService', ($http) => ({
+            initialized: false,
+            csrfToken: '',
+            loggedIn: false,
+            ...spies
+          })
+        );
   }));
 
   let element;
@@ -34,8 +46,21 @@ describe('nyuEshelf component', () => {
     const $rootScope = _$rootScope_;
     const $scope = $rootScope.$new();
 
-    const primoExploreCtrl = {};
-    const prmSearchResultAvailabilityLineCtrl = {};
+
+    const primoExploreCtrl = {
+      userSessionManagerService: {
+        isGuest() { return false; }
+      }
+    };
+
+    const prmSearchResultAvailabilityLineCtrl = { result: {
+        pnx: {
+          control: {
+            recordid: ['abcd123']
+          }
+        }
+      }
+    };
 
     element = angular.element(`<div><nyu-eshelf /></div>`);
     element.data('$primoExploreController', primoExploreCtrl);
@@ -48,7 +73,6 @@ describe('nyuEshelf component', () => {
   describe('has an element', () => {
     it('should...', () => {
       element;
-      console.log(element.html());
     });
   });
 });

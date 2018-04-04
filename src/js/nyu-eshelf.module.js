@@ -3,7 +3,7 @@ import nyuEshelfToolbarTemplate from '../html/nyuEshelfToolbar.html';
 
 angular
   // Name our module
-  .module('nyuEshelf', [])
+  .module('nyuEshelf', ["ngSanitize"])
   // Set config for using CORS within module
   .config(function($httpProvider) {
     //Enable cross domain calls
