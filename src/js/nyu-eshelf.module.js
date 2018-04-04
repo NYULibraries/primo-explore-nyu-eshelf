@@ -194,7 +194,6 @@ angular
     // Wrap the generic request
     $scope.toggleInEshelf = function(httpMethod) {
       const request = nyuEshelfService.generateRequest(httpMethod, $scope.recordData);
-      debugger;
       $http(request)
         .then(
           function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId); },
