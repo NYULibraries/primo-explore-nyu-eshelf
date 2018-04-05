@@ -11,7 +11,7 @@ describe('nyuEshelfController', () => {
       success() {}
     };
     spyOn(spies, 'checkEshelf');
-    spyOn(spies, 'generateRequest').and.returnValue('test');
+    spyOn(spies, 'generateRequest').and.returnValue('test-request');
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
