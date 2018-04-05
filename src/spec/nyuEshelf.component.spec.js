@@ -2,20 +2,15 @@ const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 
 describe('nyuEshelf component', () => {
 
-  let spies;
+  let mockServiceSpies;
   beforeEach(() => {
-    spies = {
+    mockServiceSpies = {
       initEshelf() {},
       checkEshelf() {},
       generateRequest() {},
       failure() {},
       success() {}
     };
-    spyOn(spies, 'initEshelf');
-    spyOn(spies, 'checkEshelf');
-    spyOn(spies, 'generateRequest');
-    spyOn(spies, 'failure');
-    spyOn(spies, 'success');
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
@@ -34,7 +29,7 @@ describe('nyuEshelf component', () => {
             initialized: false,
             csrfToken: '',
             loggedIn: false,
-            ...spies
+            ...mockServiceSpies
           })
         );
   }));
