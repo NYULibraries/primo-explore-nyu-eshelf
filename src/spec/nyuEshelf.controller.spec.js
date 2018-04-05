@@ -23,7 +23,7 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
-    // mocks http to do nothign to avoid warnings
+    // mocks http to do nothing to avoid warnings
     const mockHttp = (request) => new Promise((resolve, reject) => {});
     $provide.service('$http', () => mockHttp);
 

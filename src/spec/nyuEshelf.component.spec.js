@@ -14,24 +14,24 @@ describe('nyuEshelf component', () => {
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
-        $provide.service('nyuEshelfConfigService', () => {
-          const config = angular.copy(nyuEshelfConfig);
-          config.primoBaseUrl = "http://www.example.com:8080";
-          config.envConfig = config.defaultUrls;
-          return config;
-        });
+    $provide.service('nyuEshelfConfigService', () => {
+      const config = angular.copy(nyuEshelfConfig);
+      config.primoBaseUrl = "http://www.example.com:8080";
+      config.envConfig = config.defaultUrls;
+      return config;
+    });
 
-        // mocks http to do nothign to avoid warnings
-        const mockHttp = (request) => new Promise((resolve, reject) => {});
-        $provide.service('$http', () => mockHttp);
+    // mocks http to do nothign to avoid warnings
+    const mockHttp = (request) => new Promise((resolve, reject) => {});
+    $provide.service('$http', () => mockHttp);
 
-        $provide.service('nyuEshelfService', ($http) => ({
-            initialized: false,
-            csrfToken: '',
-            loggedIn: false,
-            ...mockServiceSpies
-          })
-        );
+    $provide.service('nyuEshelfService', ($http) => ({
+        initialized: false,
+        csrfToken: '',
+        loggedIn: false,
+        ...mockServiceSpies
+      })
+    );
   }));
 
   let element;
