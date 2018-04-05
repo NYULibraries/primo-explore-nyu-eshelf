@@ -162,17 +162,17 @@ angular
       // Determine what text to show if the record is in eshelf based on logged in status
       // Build the pds url
       $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
-      $scope.inEshelfText = (function() {
-        if (nyuEshelfService.loggedIn) {
-          return config.inEshelf;
-        } else {
-          return config.inGuestEshelf + ((config.loginToSave && config.loginToSave != '') ? " (<a href=\"" + $scope.pdsUrl + "\">" + config.loginToSave + "</a>)" : '');
-        }
-      })();
       // Disable the input if there is an error or the process is running
       $scope.disabled = Boolean(nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
       // In eshelf?
       $scope.inEshelf = Boolean(nyuEshelfService[$scope.externalId]);
+
+      const inGuestText = config.inGuestEshelf +
+        ((config.loginToSave && config.loginToSave != '') ?
+          " (<a href=\"" + $scope.pdsUrl + "\">" + config.loginToSave + "</a>)"
+          : '');
+
+      $scope.inEshelfText = nyuEshelfService.loggedIn ? config.inEshelf : inGuestText;
     };
     // Determine what text to show based on running status of the http call
     $scope.setElementText = function() {
@@ -185,6 +185,7 @@ angular
     };
     // Toggle the \ function on the input element
     $scope.eshelfCheckBoxTrigger = () => {
+      $scope.running = true;
       ($scope.inEshelf) ? $scope.removeFromEshelf() : $scope.addToEshelf();
     };
     // Alias to add
