@@ -119,5 +119,114 @@ describe('nyuEshelfService', () => {
 
       expect(nyuEshelfService[mockTargetRecord]).toBe(true);
     });
+
+    it('should add error key, set to true, if no response from Eshelf', () => {
+      eshelfRequestHandler.respond(401, '');
+      $httpBackend.expectGET(url);
+
+      nyuEshelfService.checkEshelf(mockTargetRecord);
+      $httpBackend.flush();
+
+      expect(nyuEshelfService[mockTargetRecord + '_error']).toBe(true);
+    });
+
   }); // end checkEshelf
+
+  describe('generateRequest', () => {
+
+    let data, mockToken, url, headers;
+    beforeEach(() => {
+      const recordId = 'acbd123';
+      mockToken = 'xxx12345xxx';
+      data = { "record": { "external_system": "primo", "external_id": recordId }};
+      url = nyuEshelfConfig.defaultUrls.eshelfBaseUrl + "/records.json";
+      headers =  { 'X-CSRF-Token': mockToken, 'Content-type': 'application/json;charset=utf-8' };
+
+      nyuEshelfService.csrfToken = mockToken;
+    });
+
+    it('should generate a post request', () => {
+      const request = nyuEshelfService.generateRequest('post', data);
+
+      expect(request).toEqual({
+        method: "POST",
+        url,
+        headers,
+        data
+      });
+    });
+
+    it('should generate a delete request', () => {
+      const request = nyuEshelfService.generateRequest('delete', data);
+
+      expect(request).toEqual({
+        method: "DELETE",
+        url,
+        headers,
+        data
+      });
+    });
+
+  }); // end generateRequest
+
+  describe('success', () => {
+
+    let mockToken, recordId;
+    beforeEach(() => {
+      mockToken = 'xxx1234xxx';
+      recordId = 'abcd123';
+    });
+
+    describe('200 response', () => {
+      beforeEach(() => {
+        const goodResponse = {
+          headers: arg => arg === 'x-csrf-token' ? mockToken : null,
+          status: 201
+        };
+
+        nyuEshelfService.success(goodResponse, recordId);
+      });
+
+      it('should set externalId key to true on service', () => {
+        expect(nyuEshelfService[recordId]).toBe(true);
+      });
+
+      it('should set csrfToken', () => {
+        expect(nyuEshelfService.csrfToken).toEqual(mockToken);
+      });
+    });
+
+
+    describe('non-200 response', () => {
+
+      beforeEach(() => {
+        nyuEshelfService[recordId] = true; //set to true intially
+
+        const badResponse = {
+          headers() {
+            return null;
+          },
+          status: 400
+        };
+
+        nyuEshelfService.success(badResponse, recordId);
+      });
+
+      it("should ensure externalId key isn't truthy", () => {
+        expect(nyuEshelfService[recordId]).toBeFalsy();
+      });
+
+    });
+
+  });
+
+  describe('failure', () => {
+
+    it('should set an error key to true', () => {
+      const recordId = 'abcd123';
+      nyuEshelfService.failure({}, recordId);
+      expect(nyuEshelfService[recordId+"_error"]).toBe(true);
+    });
+
+  });
 });

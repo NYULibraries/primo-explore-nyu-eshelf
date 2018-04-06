@@ -121,7 +121,7 @@ angular
         };
         return request;
       },
-      failure: function(response, externalId) {
+      failure: function(_response, externalId) {
         this[externalId+'_error'] = true;
       },
       // Set the new csrfToken to the response header on success
