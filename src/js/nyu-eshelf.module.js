@@ -138,13 +138,6 @@ angular
       }
     };
   }])
-  // Run directive before everything else runs
-  .run(['nyuEshelfService', function(nyuEshelfService){
-    // Initialize eshelf session and get CSRF-Token
-    if (!nyuEshelfService.initialized) {
-      nyuEshelfService.initEshelf();
-    }
-  }])
   // Controller for the eshelf input form component
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfigService', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     const ctrl = this;
