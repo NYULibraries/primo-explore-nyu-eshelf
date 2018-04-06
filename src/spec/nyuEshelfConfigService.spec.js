@@ -2,66 +2,107 @@ const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 
 describe('nyuEshelfConfigService', () => {
 
-  // let nyuEshelfConfigService, $location;
-  // beforeEach(inject(function(_$location_, $injector) {
-  //   debugger;
-  //   // nyuEshelfConfigService = _nyuEshelfConfigService_;
-  //   $location = {
-  //     protocol: () => "http",
-  //     host: () => "example.com",
-  //     port: () => "8080"
-  //   };
-  // }));
+  describe('with no custom configuration', () => {
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.constant('nyuEshelfConfig', {});
+    }));
 
-  it('should contain default properties', () => {
-    // const { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error } = nyuEshelfConfig;
-    // const defaults = { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error };
-    // for (const key/ in defaults) {
-    //   expect(nyuEshelfConfigService[key]).toEqual(defaults[key]);
-    // }
+    let nyuEshelfConfigService;
+    beforeEach(inject(function(_nyuEshelfConfigService_) {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
+
+    it('should contain default properties', () => {
+      const { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error } = nyuEshelfConfig;
+      const defaults = { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error };
+      for (const key in defaults) {
+        expect(nyuEshelfConfigService[key]).toEqual(defaults[key]);
+      }
+    });
+
+    it('should merge defaultUrls', () => {
+      const defaultUrls = {
+        pdsUrl: {
+          base: 'https://pdsdev.library.nyu.edu/pds',
+          callingSystem: 'primo'
+        },
+        eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
+        institution: 'NYU'
+      };
+
+      expect(nyuEshelfConfigService.envConfig).toEqual(defaultUrls);
+    });
+
+
+    it('should construct primoBaseUrl', () => {
+      const primoBaseUrl = "http://server:80";
+      expect(nyuEshelfConfigService.primoBaseUrl).toEqual(primoBaseUrl);
+    });
+
   });
 
-  // it('should merge defaultUrls when host settings not found', () => {
-  //   expect(nyuEshelfConfigService.envConfig).toEqual(nyuEshelfConfig.defaultUrls);
-  // });
-  //
-  // it('should use specified URLs when host settings found', () => {
-  //   const host = "bobcat.library.nyu.edu";
-  //   $location = {
-  //     protocol: () => "http",
-  //     host: () => host,
-  //     port: () => "8080"
-  //   };
-  //
-  //   expect(nyuEshelfConfigService.envConfig).toEqual(nyuEshelfConfig[host]);
-  // });
-  //
-  // it('should construct primoBaseUrl', () => {
-  //   const primoBaseUrl = "http://example.com:8080";
-  //   expect(nyuEshelfConfigService.primoBaseUrl).toEqual(primoBaseUrl);
-  // });
+  describe('when utilizing on host', () => {
 
-  // describe('with custom configuration', () => {
-  //   let customConfig;
-  //   const customMessages = {
-  //     myEshelf: 'My custom e-shelf',
-  //     adding: 'Adding to custom e-shelf...',
-  //     error: 'My custom error'
-  //   };
-  //
-  //   beforeEach(module('nyuEshelf', ($provide) => {
-  //     customConfig = angular.copy(nyuEshelfConfig);
-  //     Object.assign(customConfig, customMessages);
-  //     delete customConfig["bobcat.library.nyu.edu"];
-  //     $provide.constant('nyuEshelfConfig', customConfig);
-  //   }));
-  //
-  //   it('should merge custom properties into config', () => {
-  //     for (const key in customConfig) {
-  //       expect(customConfig[key]).toEqual(nyuEshelfConfigService[key]);
-  //     }
-  //   });
-  //
-  // });
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.service('$location', () => {
+        return {
+          protocol: () => "http",
+          host: () => "bobcat.library.nyu.edu",
+          port: () => "80"
+        };
+      });
+      $provide.constant('nyuEshelfConfig', {});
+    }));
+
+    let nyuEshelfConfigService;
+    beforeEach(inject(function(_nyuEshelfConfigService_) {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
+
+    it('should use specified URLs', () => {
+
+      const defaultHost = {
+        pdsUrl: {
+          base: 'https://pds.library.nyu.edu/pds',
+          callingSystem: 'primo'
+        },
+        eshelfBaseUrl: 'https://eshelf.library.nyu.edu',
+        institution: 'NYU'
+      };
+
+      expect(nyuEshelfConfigService.envConfig).toEqual(defaultHost);
+    });
+  });
+
+  describe('with custom configuration', () => {
+
+    // TODO: figure out why
+
+    let customConfig;
+    beforeEach(module('nyuEshelf', $provide => {
+      const customMessages = {
+        myEshelf: 'My custom e-shelf',
+        adding: 'Adding to custom e-shelf...',
+        error: 'My custom error'
+      };
+
+      customConfig = angular.copy(nyuEshelfConfig);
+      customConfig = { customConfig, ...customMessages };
+      delete customConfig["bobcat.library.nyu.edu"];
+      $provide.constant('nyuEshelfConfig', customConfig);
+    }));
+
+    let nyuEshelfConfigService;
+    beforeEach(inject(function(_nyuEshelfConfigService_) {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
+
+    it('should merge custom properties into config', () => {
+      for (const key in customConfig) {
+        expect(customConfig[key]).toEqual(nyuEshelfConfigService[key]);
+      }
+    });
+
+  }); // end custom configuration
 
 });
