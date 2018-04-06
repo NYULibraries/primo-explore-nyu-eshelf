@@ -75,9 +75,7 @@ describe('nyuEshelfConfigService', () => {
   });
 
   describe('with custom configuration', () => {
-
-    // TODO: figure out why
-
+    // TODO: figure out why doesn't consistently pass
     let customConfig;
     beforeEach(module('nyuEshelf', $provide => {
       const customMessages = {
