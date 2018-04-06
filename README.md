@@ -68,6 +68,21 @@ app
   })
 ```
 
+### Run block
+
+In order to initialize eShelf, a run block must also be added to the run block on the main app:
+
+```js
+app.run(runBlock);
+
+runBlock.$inject = ['nyuEshelfService'];
+
+function runBlock(nyuEshelfService) {
+  // other potential run operations...
+  nyuEshelfService.initEshelf();
+}
+```
+
 ### Disable out of the box "Saved Records" functionality
 
 If you want to fully hide the existing "Saved Records" functionality and exclusively use the custom e-Shelf add the following CSS:
