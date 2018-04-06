@@ -86,60 +86,38 @@ describe('nyuEshelfService', () => {
       expect(nyuEshelfService.csrfToken).toEqual('');
     });
 
+  }); // end initEshelf
 
+  describe('checkEshelf', () => {
+
+    let $httpBackend;
+    let eshelfRequestHandler;
+    let mockData, mockTargetRecord, url;
+    beforeEach(inject(function(_$httpBackend_){
+      $httpBackend = _$httpBackend_;
+
+      mockTargetRecord = 'acbd123';
+      mockData = ['x1', mockTargetRecord, 'x2', 'x3'];
+
+      url = nyuEshelfConfig.defaultUrls.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + mockTargetRecord;
+
+      eshelfRequestHandler = $httpBackend
+                                .when('GET', url)
+                                .respond(mockData);
+    }));
+
+    afterEach(() => {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
     });
 
-    describe('checkEshelf', () => {
+    it('should add externalId key, set to true, if item found on server', () => {
+      $httpBackend.expectGET(url);
 
-      let $httpBackend;
-      let eshelfRequestHandler;
-      let mockData, mockTargetRecord, url;
-      beforeEach(inject(function(_$httpBackend_){
-        $httpBackend = _$httpBackend_;
+      nyuEshelfService.checkEshelf(mockTargetRecord);
+      $httpBackend.flush();
 
-        mockTargetRecord = 'acbd123';
-        mockData = ['x1', mockTargetRecord, 'x2', 'x3'];
-
-        url = nyuEshelfConfig.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + mockTargetRecord;
-        url = escapeRegExp(url);
-
-        eshelfRequestHandler = $httpBackend
-                                  .when('GET', url)
-                                  .respond(mockData);
-      }));
-
-      it('should add externalId key, set to true, if item found on server', () => {
-        
-      });
-
-  });
-
-  // describe('initEshelf', () => {
-  //
-  //   let $httpBackend, $http, url;
-  //   beforeEach(inject(function(_$httpBackend_, _$http_){
-  //     $httpBackend = _$httpBackend_;
-  //     $http = _$http_;
-  //
-  //     url = nyuEshelfConfig.defaultUrls.eshelfBaseUrl +
-  //       "/records/from/primo.json?per=all&_=" +
-  //       Date.now();
-  //
-  //     $httpBackend.when('GET', url).respond(200, { 'x-csrf-token': 'xxx' });
-  //   }));
-  //
-  //   afterEach(() => {
-  //     $httpBackend.verifyNoOutstandingExpectation();
-  //     $httpBackend.verifyNoOutstandingRequest();
-  //   });
-  //
-  //   it('should...', () => {
-  //     nyuEshelfService.initEshelf();
-  //     $httpBackend.expectGET(url);
-  //     $httpBackend.flush();
-  //   });
-  //
-  // });
-
-
+      expect(nyuEshelfService[mockTargetRecord]).toBe(true);
+    });
+  }); // end checkEshelf
 });
