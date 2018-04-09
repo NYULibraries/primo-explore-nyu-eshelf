@@ -3,15 +3,18 @@ const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 describe('nyuEshelfController', () => {
   let spies;
   beforeEach(() => {
+    const mockHttp = (request) => new Promise((resolve, reject) => {});
     spies = {
       initEshelf() {},
       checkEshelf() {},
-      generateRequest() {},
+      generateRequest: (method, ) => ({ method: method.toUpperCase()}),
       failure() {},
-      success() {}
+      success() {},
+      ['$http']: () => mockHttp
     };
     spyOn(spies, 'checkEshelf');
-    spyOn(spies, 'generateRequest').and.returnValue('test-request');
+    spyOn(spies, 'generateRequest').and.callThrough();
+    spyOn(spies, '$http').and.callThrough();
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
@@ -24,8 +27,7 @@ describe('nyuEshelfController', () => {
     });
 
     // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
-    const mockHttp = (request) => new Promise((resolve, reject) => {});
-    $provide.service('$http', () => mockHttp);
+    $provide.service('$http', spies.$http);
 
     $provide.service('nyuEshelfService', ($http) => ({
         initialized: false,
@@ -234,7 +236,10 @@ describe('nyuEshelfController', () => {
         expect(spies.generateRequest).toHaveBeenCalledWith("post", data);
       });
 
-      // TODO: check for calling $http? Having issue with setting up spy correctly
+      it('should make an $http request', () => {
+        expect(spies['$http']).toHaveBeenCalled();
+      });
+
     });
 
     describe("removeFromEshelf", () => {
@@ -249,7 +254,10 @@ describe('nyuEshelfController', () => {
         expect(spies.generateRequest).toHaveBeenCalledWith("delete", data);
       });
 
-      // TODO: check for calling $http? Having issue with setting up spy correctly
+      it('should make an $http request', () => {
+        expect(spies['$http']).toHaveBeenCalled();
+      });
+
     });
 
   }); // end $scope functions
