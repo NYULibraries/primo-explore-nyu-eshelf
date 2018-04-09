@@ -23,7 +23,7 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
-    // mocks http to do nothing to avoid warnings
+    // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
     const mockHttp = (request) => new Promise((resolve, reject) => {});
     $provide.service('$http', () => mockHttp);
 
