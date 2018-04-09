@@ -97,7 +97,8 @@ describe('nyuEshelfController', () => {
 
         it('should open the eshelfUrl in a new window', () => {
           const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
-          expect(window, 'open').toBeCalledWith(url, '_blank');
+          $scope.openEshelf();
+          expect(window.open).toHaveBeenCalledWith(url, '_blank');
         });
 
       });
