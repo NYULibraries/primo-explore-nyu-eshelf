@@ -3,9 +3,11 @@ const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 describe('nyuEshelfConfigService', () => {
 
   describe('with no custom configuration', () => {
-    beforeEach(module('nyuEshelf', $provide => {
-      $provide.constant('nyuEshelfConfig', {});
-    }));
+    beforeEach(() => {
+      module('nyuEshelf', $provide => {
+        $provide.constant('nyuEshelfConfig', {});
+      });
+    });
 
     let nyuEshelfConfigService;
     beforeEach(inject(function(_nyuEshelfConfigService_) {
@@ -15,6 +17,7 @@ describe('nyuEshelfConfigService', () => {
     it('should contain default properties', () => {
       const { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error } = nyuEshelfConfig;
       const defaults = { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error };
+
       for (const key in defaults) {
         expect(nyuEshelfConfigService[key]).toEqual(defaults[key]);
       }
@@ -43,16 +46,18 @@ describe('nyuEshelfConfigService', () => {
 
   describe('when utilizing on host', () => {
 
-    beforeEach(module('nyuEshelf', $provide => {
-      $provide.service('$location', () => {
-        return {
-          protocol: () => "http",
-          host: () => "bobcat.library.nyu.edu",
-          port: () => "80"
-        };
+    beforeEach(() => {
+      module('nyuEshelf', $provide => {
+        $provide.service('$location', () => {
+          return {
+            protocol: () => "http",
+            host: () => "bobcat.library.nyu.edu",
+            port: () => "80"
+          };
+        });
+        $provide.constant('nyuEshelfConfig', {});
       });
-      $provide.constant('nyuEshelfConfig', {});
-    }));
+    });
 
     let nyuEshelfConfigService;
     beforeEach(inject(function(_nyuEshelfConfigService_) {
@@ -75,9 +80,8 @@ describe('nyuEshelfConfigService', () => {
   });
 
   describe('with custom configuration', () => {
-    // TODO: figure out why doesn't consistently pass
     let customConfig;
-    beforeEach(module('nyuEshelf', $provide => {
+    beforeEach(() => {
       const customMessages = {
         myEshelf: 'My custom e-shelf',
         adding: 'Adding to custom e-shelf...',
@@ -85,10 +89,15 @@ describe('nyuEshelfConfigService', () => {
       };
 
       customConfig = angular.copy(nyuEshelfConfig);
-      customConfig = { customConfig, ...customMessages };
+      customConfig = angular.merge(customConfig, customMessages);
       delete customConfig["bobcat.library.nyu.edu"];
-      $provide.constant('nyuEshelfConfig', customConfig);
-    }));
+    });
+
+    beforeEach(() => {
+      module('nyuEshelf', $provide => {
+        $provide.constant('nyuEshelfConfig', customConfig);
+      });
+    });
 
     let nyuEshelfConfigService;
     beforeEach(inject(function(_nyuEshelfConfigService_) {
