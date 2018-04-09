@@ -65,7 +65,7 @@ angular
       loggedIn: false, // Are we logged in?,
       // Make an initial call to eshelf to find out if any of the current
       // records are already in our eshelf and geet the first csrfToken
-      initEshelf: function() {
+      initEshelf() {
         let svc = this; // For maintaining service scoping in the function below
         // Eshelf API to setup csrfToken and avoid that pesky cache
         let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
@@ -85,7 +85,7 @@ angular
         );
       },
       // Check eshelf for existing externalId
-      checkEshelf: function(externalId) {
+      checkEshelf(externalId) {
         // Use eshelf API to check if record with externalId is in current user's eshelf
         let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
         let svc = this; // For maintaining service scoping in the function below
@@ -106,26 +106,23 @@ angular
          );
       },
       // Generate a generic http request for the different types of calls to eshelf
-      generateRequest: function(httpMethod, data) {
+      generateRequest(method, data) {
+        method = method.toUpperCase();
         // Whitelist http methods DELETE and POST
-        if (!/^(DELETE|POST)$/.test(httpMethod.toUpperCase())) {
+        if (!/^(DELETE|POST)$/.test(method)) {
           return {};
         }
         // Cors headers
-        let headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' };
-        let request = {
-          method: httpMethod.toUpperCase(),
-          url: config.envConfig.eshelfBaseUrl + "/records.json",
-          headers: headers,
-          data: data
-        };
-        return request;
+        const headers = { 'X-CSRF-Token': this.csrfToken, 'Content-type': 'application/json;charset=utf-8' };
+        const url = config.envConfig.eshelfBaseUrl + "/records.json";
+
+        return ({ method, url, headers, data });
       },
-      failure: function(_response, externalId) {
+      failure(_response, externalId) {
         this[externalId+'_error'] = true;
       },
       // Set the new csrfToken to the response header on success
-      success: function(response, externalId) {
+      success(response, externalId) {
         if (response.headers('x-csrf-token')) {
           this.csrfToken = response.headers('x-csrf-token');
         }
