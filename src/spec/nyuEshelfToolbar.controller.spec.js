@@ -22,7 +22,7 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
-    // mocks http to do nothign to avoid warnings
+    // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
     const mockHttp = (request) => new Promise((resolve, reject) => {});
     $provide.service('$http', () => mockHttp);
 
@@ -86,9 +86,20 @@ describe('nyuEshelfController', () => {
       });
 
       describe('$scope.openEshelf', () => {
-        it('should be defined', () => {
 
+        beforeEach(() => {
+          spyOn(window, 'open');
         });
+
+        it('should be defined', () => {
+          expect($scope.openEshelf).toBeDefined();
+        });
+
+        it('should open the eshelfUrl in a new window', () => {
+          const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
+          expect(window, 'open').toBeCalledWith(url, '_blank');
+        });
+
       });
     });
 
