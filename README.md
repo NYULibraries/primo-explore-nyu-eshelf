@@ -1,5 +1,8 @@
 # primo-explore-nyu-eshelf
 
+[![Build Status](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf.svg?branch=master)](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf)
+[![npm version](https://img.shields.io/npm/v/primo-explore-nyu-eshelf.svg)](https://www.npmjs.com/package/primo-explore-nyu-eshelf)
+
 ## Description
 
 Add custom NYU E-Shelf functionality.
