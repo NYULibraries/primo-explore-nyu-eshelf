@@ -1,7 +1,7 @@
 module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
-    reporters: ['spec', 'coverage'],
+    reporters: ['spec', 'coverage', 'coveralls'],
     browsers: ['PhantomJS'],
     basePath: 'src/',
     files: [
@@ -20,6 +20,10 @@ module.exports = function(config) {
     },
     jsonFixturesPreprocessor: {
       stripPrefix: "spec/fixtures/"
+    },
+    coverageReporter: {
+      type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+      dir: 'coverage/'
     }
   });
 };

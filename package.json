@@ -44,5 +44,8 @@
     "karma-json-fixtures-preprocessor": "^0.0.6",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-spec-reporter": "^0.0.32"
+  },
+  "dependencies": {
+    "karma-coveralls": "^1.1.2"
   }
 }
