@@ -10,9 +10,11 @@ describe('nyuEshelfConfigService', () => {
     });
 
     let nyuEshelfConfigService;
-    beforeEach(inject(function(_nyuEshelfConfigService_) {
-      nyuEshelfConfigService = _nyuEshelfConfigService_;
-    }));
+    beforeEach(() => {
+      inject((_nyuEshelfConfigService_) => {
+        nyuEshelfConfigService = _nyuEshelfConfigService_;
+      });
+    });
 
     // TODO: This test is not passing consistently. Figure out new way to implement;
     // it('should contain default properties', () => {
@@ -61,9 +63,11 @@ describe('nyuEshelfConfigService', () => {
     });
 
     let nyuEshelfConfigService;
-    beforeEach(inject(function(_nyuEshelfConfigService_) {
-      nyuEshelfConfigService = _nyuEshelfConfigService_;
-    }));
+    beforeEach(() => {
+      inject(function(_nyuEshelfConfigService_) {
+        nyuEshelfConfigService = _nyuEshelfConfigService_;
+      });
+    });
 
     it('should use specified URLs', () => {
 
@@ -101,9 +105,11 @@ describe('nyuEshelfConfigService', () => {
     });
 
     let nyuEshelfConfigService;
-    beforeEach(inject(function(_nyuEshelfConfigService_) {
-      nyuEshelfConfigService = _nyuEshelfConfigService_;
-    }));
+    beforeEach(() => {
+      inject(function(_nyuEshelfConfigService_) {
+        nyuEshelfConfigService = _nyuEshelfConfigService_;
+      });
+    });
 
     it('should merge custom properties into config', () => {
       for (const key in customConfig) {

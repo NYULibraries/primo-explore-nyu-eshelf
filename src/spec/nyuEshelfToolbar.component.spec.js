@@ -21,10 +21,10 @@ describe('nyuEshelf component', () => {
     });
 
     // mocks http to do nothign to avoid warnings
-    const mockHttp = (request) => new Promise((resolve, reject) => {});
+    const mockHttp = (req) => new Promise((res, req) => {});
     $provide.service('$http', () => mockHttp);
 
-    $provide.service('nyuEshelfService', ($http) => ({
+    $provide.service('nyuEshelfService', () => ({
         initialized: false,
         csrfToken: '',
         loggedIn: false,

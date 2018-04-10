@@ -23,10 +23,10 @@ describe('nyuEshelfController', () => {
     });
 
     // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
-    const mockHttp = (request) => new Promise((resolve, reject) => {});
+    const mockHttp = (req) => new Promise((res, rej) => {});
     $provide.service('$http', () => mockHttp);
 
-    $provide.service('nyuEshelfService', ($http) => ({
+    $provide.service('nyuEshelfService', () => ({
         initialized: false,
         csrfToken: '',
         loggedIn: false,
@@ -37,16 +37,13 @@ describe('nyuEshelfController', () => {
 
   let $scope, $componentController;
   let controller, bindings;
-  let nyuEshelfService;
-
-  beforeEach(inject(function(_$rootScope_, _$componentController_, _nyuEshelfService_) {
+  beforeEach(inject(function(_$rootScope_, _$componentController_) {
     $scope = _$rootScope_;
     $componentController = _$componentController_;
-    nyuEshelfService = _nyuEshelfService_;
 
     const primoExploreCtrl = {
       userSessionManagerService: {
-        isGuest() { return false; } // default user is logged in
+        isGuest: () => false // default user is logged in
       }
     };
 
