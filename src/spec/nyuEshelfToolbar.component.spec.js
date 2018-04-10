@@ -1,6 +1,6 @@
 const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 
-describe('nyuEshelf component', () => {
+describe('nyuEshelfToolbar component', () => {
   let mockServiceSpies;
   beforeEach(() => {
     mockServiceSpies = {
