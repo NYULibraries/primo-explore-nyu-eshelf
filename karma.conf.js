@@ -1,7 +1,7 @@
 module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
     browsers: ['PhantomJS'],
     basePath: 'src/',
     files: [
@@ -14,7 +14,7 @@ module.exports = function(config) {
       'spec/**/*.spec.js',
     ],
     preprocessors: {
-      'js/**/*.js': ['babel'],
+      'js/**/*.js': ['babel', 'coverage'],
       'spec/**/*.spec.js': ['babel'],
       'spec/fixtures/**/*.json': ['json_fixtures'],
     },
