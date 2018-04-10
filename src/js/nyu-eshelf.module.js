@@ -58,7 +58,7 @@ angular
     return mergedConfig;
   }])
   // Reusable factory for initiating an 'add to eshelf' input element
-  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', (config, $http) => {
+  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', function(config, $http) {
     return {
       initialized: false, // Is the csrfToken initialized on first load of the page?
       csrfToken: '', // Storage spot for the csrfToken
@@ -71,14 +71,13 @@ angular
         let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
         // Get the csrfToken already
         $http.get(url).then(
-          function(response){
+          (response) => {
             if (response.headers('x-csrf-token')) {
               svc.csrfToken = response.headers('x-csrf-token');
               svc.initialized = true;
             }
           },
-          // Oops
-          function(response){
+          (response) => {
             console.error("Error in e-Shelf CORS API");
             console.error("Response: " + response);
           }
@@ -90,7 +89,7 @@ angular
         let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + externalId;
         let svc = this; // For maintaining service scoping in the function below
         $http.get(url).then(
-            function(response){
+            (response) => {
               if (response.data.length > 0) {
                 if (response.data.filter(item => item["external_id"] == externalId)) {
                   // If we found the externalId in the response set that
@@ -100,8 +99,9 @@ angular
               }
             },
             // Oops, set an error object
-            function(_response){
+            (response) => {
               svc[externalId+'_error'] = true;
+              console.error(response.data);
             }
          );
       },
@@ -129,6 +129,7 @@ angular
 
         if (response.status == 201) {
           this[externalId] = true;
+          delete this[externalId+'_error'];
         } else {
           delete this[externalId];
         }
@@ -139,7 +140,7 @@ angular
   .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfigService', '$rootScope', '$scope', '$http', '$location', '$window', function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
     const ctrl = this;
 
-    this.$onInit = function() {
+    this.$onInit = () => {
       // Primo ID
       $scope.externalId = ctrl.prmSearchResultAvailabilityLineCtrl.result.pnx.control.recordid[0];
       $scope.elementId = "eshelf_" + $scope.externalId + ((ctrl.prmSearchResultAvailabilityLineCtrl.isFullView) ? "_full" : "_brief");
@@ -165,12 +166,13 @@ angular
       $scope.inEshelfText = nyuEshelfService.loggedIn ? config.inEshelf : inGuestText;
     };
     // Determine what text to show based on running status of the http call
-    $scope.setElementText = function() {
-      if (nyuEshelfService[$scope.externalId+'_error']) { return config.error; }
-      if (nyuEshelfService[$scope.externalId]) {
-        return ($scope.running) ? config.deleting : $scope.inEshelfText;
+    $scope.setElementText = () => {
+      if (nyuEshelfService[$scope.externalId+'_error']) {
+        return config.error;
+      } else if (nyuEshelfService[$scope.externalId]) {
+        return $scope.running ? config.deleting : $scope.inEshelfText;
       } else {
-        return ($scope.running) ? config.adding : config.addToEshelf;
+        return $scope.running ? config.adding : config.addToEshelf;
       }
     };
     // Toggle the \ function on the input element
@@ -183,7 +185,7 @@ angular
     // Alias to delete
     $scope.removeFromEshelf = () => { $scope.toggleInEshelf('delete'); };
     // Wrap the generic request
-    $scope.toggleInEshelf = function(httpMethod) {
+    $scope.toggleInEshelf = (httpMethod) => {
       const request = nyuEshelfService.generateRequest(httpMethod, $scope.recordData);
       $http(request)
         .then(
@@ -204,14 +206,15 @@ angular
   // Controller for topbar 'my eshelf' button
   .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', function(nyuEshelfService, config, $scope) {
 
-    this.$onInit = function() {
+    this.$onInit = () => {
       $scope.loggedIn = !this.primoExploreCtrl.userSessionManagerService.isGuest();
       $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
       $scope.elementText = $scope.loggedIn ? config.myEshelf : config.guestEshelf;
       $scope.eshelfUrl = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
-      $scope.openEshelf = function() {
-        window.open($scope.eshelfUrl, '_blank');
-      };
+    };
+
+    $scope.openEshelf = () => {
+      window.open($scope.eshelfUrl, '_blank');
     };
   }])
   // Setup a new button component to add to the topbar

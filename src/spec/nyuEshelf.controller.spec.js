@@ -3,14 +3,14 @@ const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 describe('nyuEshelfController', () => {
   let spies;
   beforeEach(() => {
-    const mockHttp = (request) => new Promise((resolve, reject) => {});
+    const mockHttp = (req) => new Promise((_res, _rej) => {});
     spies = {
       initEshelf() {},
       checkEshelf() {},
       generateRequest: (method, ) => ({ method: method.toUpperCase()}),
       failure() {},
       success() {},
-      ['$http']: () => mockHttp
+      $http: () => mockHttp
     };
     spyOn(spies, 'checkEshelf');
     spyOn(spies, 'generateRequest').and.callThrough();
