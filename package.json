@@ -7,8 +7,8 @@
     "test": "karma start --single-run",
     "test:chrome-debugger": "karma start --browsers=Chrome --single-run=false --debug",
     "copy-css": "cp -r src/css/ dist/css/",
-    "babel": "babel src --out-dir dist --ignore *.spec.js",
-    "build": "yarn babel; yarn copy-css",
+    "babelfy": "yarn babel src --out-dir dist --ignore *.spec.js",
+    "build": "yarn babelfy; yarn copy-css",
     "build:watch": "yarn build --watch",
     "prepublish": "yarn build"
   },
@@ -30,6 +30,7 @@
     "angular": "^1.6.9",
     "angular-mocks": "^1.6.9",
     "angular-sanitize": "1.6.9",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-plugin-transform-html-import-to-string": "^0.0.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
