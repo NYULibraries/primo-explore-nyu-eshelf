@@ -1,6 +1,6 @@
 const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 
-describe('nyuEshelfToolbarController', () => {
+describe('nyuEshelfController', () => {
   let mockServiceSpies;
   beforeEach(() => {
     mockServiceSpies = {
@@ -66,7 +66,7 @@ describe('nyuEshelfToolbarController', () => {
       });
 
       it('should assign the appropriate loggedIn value', () => {
-        expect($scope.loggedIn()).toBe(true);
+        expect($scope.loggedIn).toBe(true);
       });
 
       it('should assign myEshelfButtonClasses', () => {
@@ -74,7 +74,7 @@ describe('nyuEshelfToolbarController', () => {
       });
 
       it('should assign appropriate elementText', () => {
-        expect($scope.elementText()).toEqual(config.myEshelf);
+        expect($scope.elementText).toEqual(config.myEshelf);
       });
 
       it('should assign eshelfUrl', () => {
@@ -117,11 +117,11 @@ describe('nyuEshelfToolbarController', () => {
       });
 
       it('should assign appropriate loggedIn value', () => {
-        expect($guestScope.loggedIn()).toBe(false);
+        expect($guestScope.loggedIn).toBe(false);
       });
 
       it('should assign appropriate elementText', () => {
-        expect($guestScope.elementText()).toEqual(config.guestEshelf);
+        expect($guestScope.elementText).toEqual(config.guestEshelf);
       });
     });
 
