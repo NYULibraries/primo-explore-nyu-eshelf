@@ -14,7 +14,7 @@ module.exports = function(config) {
       'spec/**/*.spec.js',
     ],
     preprocessors: {
-      'js/**/*.js': ['babel', 'coverage'],
+      'js/**/*.js': ['webpack', 'coverage'],
       'spec/**/*.spec.js': ['babel'],
       'spec/fixtures/**/*.json': ['json_fixtures'],
     },
@@ -24,6 +24,16 @@ module.exports = function(config) {
     coverageReporter: {
       type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
       dir: 'coverage/'
+    },
+    webpack: {
+      mode: 'development',
+      module: {
+        rules: [
+          {
+            loader: 'babel-loader'
+          }
+        ]
+      }
     }
   });
 };
