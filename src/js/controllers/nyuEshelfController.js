@@ -9,8 +9,6 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     $scope.recordData = { "record": { "external_system": "primo", "external_id": $scope.externalId }};
     // Determine if we're logged into Primo/PDS
     nyuEshelfService.loggedIn = !ctrl.primoExploreCtrl.userSessionManagerService.isGuest();
-    // Check if this record is in eshelf
-    nyuEshelfService.checkEshelf($scope.externalId);
     // Determine what text to show if the record is in eshelf based on logged in status
     // Build the pds url
     $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
