@@ -3,7 +3,7 @@ import nyuEshelfTemplate from '../html/nyuEshelf.html';
 import nyuEshelfToolbarTemplate from '../html/nyuEshelfToolbar.html';
 
 //controllers
-import nyuEshelfController from './controllers/nyueShelfController.js';
+import nyuEshelfController from './controllers/nyuEshelfController.js';
 import nyuEshelfToolbarController from './controllers/nyuEshelfToolbarController.js';
 
 //services
