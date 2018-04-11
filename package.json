@@ -7,7 +7,7 @@
     "test": "karma start --single-run",
     "test:chrome-debugger": "karma start --browsers=Chrome --single-run=false --debug",
     "copy-css": "cp -r src/css/ dist/css/",
-    "babelfy": "yarn babel src --out-dir dist --ignore *.spec.js",
+    "babelfy": "yarn babel src --out-dir dist --ignore *.spec.js,coverage",
     "build": "yarn babelfy; yarn copy-css",
     "build:watch": "yarn build --watch",
     "prepublish": "yarn build"
@@ -39,6 +39,8 @@
     "karma": "^2.0.0",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.1",
+    "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^1.1.1",
     "karma-json-fixtures-preprocessor": "^0.0.6",
     "karma-phantomjs-launcher": "^1.0.4",

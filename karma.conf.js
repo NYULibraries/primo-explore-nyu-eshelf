@@ -1,7 +1,7 @@
 module.exports = function(config) {
   config.set({
     frameworks: ['jasmine'],
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage', 'coveralls'],
     browsers: ['PhantomJS'],
     basePath: 'src/',
     files: [
@@ -14,12 +14,16 @@ module.exports = function(config) {
       'spec/**/*.spec.js',
     ],
     preprocessors: {
-      'js/**/*.js': ['babel'],
+      'js/**/*.js': ['babel', 'coverage'],
       'spec/**/*.spec.js': ['babel'],
       'spec/fixtures/**/*.json': ['json_fixtures'],
     },
     jsonFixturesPreprocessor: {
       stripPrefix: "spec/fixtures/"
+    },
+    coverageReporter: {
+      type: 'lcov', // lcov or lcovonly are required for generating lcov.info files
+      dir: 'coverage/'
     }
   });
 };
