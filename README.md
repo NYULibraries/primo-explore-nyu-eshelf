@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf.svg?branch=master)](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf)
 [![npm version](https://img.shields.io/npm/v/primo-explore-nyu-eshelf.svg)](https://www.npmjs.com/package/primo-explore-nyu-eshelf)
+[![Coverage Status](https://coveralls.io/repos/github/NYULibraries/primo-explore-nyu-eshelf/badge.svg?branch=feature%2Finstanbul_coverage)](https://coveralls.io/github/NYULibraries/primo-explore-nyu-eshelf?branch=feature%2Finstanbul_coverage)
 
 ## Description
 
