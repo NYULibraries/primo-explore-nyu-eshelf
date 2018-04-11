@@ -10,7 +10,7 @@
     "babelify": "yarn babel src --out-dir dist --ignore *.spec.js,coverage",
     "build": "yarn babelify; yarn copy-css",
     "build:watch": "yarn build --watch",
-    "prepublish": "yarn build"
+    "prepare": "yarn build"
   },
   "repository": {
     "type": "git",
