@@ -8,6 +8,7 @@ import nyuEshelfToolbarController from './controllers/nyuEshelfToolbarController
 
 //services
 import nyuEshelfService from './services/nyuEshelfService.js';
+import nyuEshelfConfigService from './services/nyuEshelfConfigService.js';
 
 //constants
 import nyuEshelfConfigDefaults from './constants/nyuEshelfConfigDefaults.js';
@@ -31,16 +32,7 @@ angular
   // Can be overriden with nyuEshelfConfig constant
   .constant('nyuEshelfConfigDefaults', nyuEshelfConfigDefaults)
   // Reuseable factory for setting config
-  .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', '$location', function(defaults, config, $location) {
-    // Merge default config values with local configs
-    // Note: Be aware that angular.merge is deprecated and will not work in > 2
-    let mergedConfig = angular.merge(defaults, config);
-    // Set primoBaseUrl for pds return script based on current instance
-    mergedConfig['primoBaseUrl'] = $location.protocol() + "://" + $location.host() + ":" + $location.port();
-    // Setup the environment config based on current host matching config obj
-    mergedConfig['envConfig'] = (typeof mergedConfig[$location.host()] === 'undefined') ? mergedConfig.defaultUrls : mergedConfig[$location.host()];
-    return mergedConfig;
-  }])
+  .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', '$location', nyuEshelfConfigService])
   // Reusable factory for initiating an 'add to eshelf' input element
   .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', nyuEshelfService])
   // Controller for the eshelf input form component
