@@ -14,7 +14,7 @@ module.exports = function(config) {
       'spec/**/*.spec.js',
     ],
     preprocessors: {
-      'js/**/*.js': ['webpack', 'coverage'],
+      'js/**/*.js': ['webpack', 'sourcemap', 'coverage'],
       'spec/**/*.spec.js': ['babel'],
       'spec/fixtures/**/*.json': ['json_fixtures'],
     },
@@ -33,7 +33,8 @@ module.exports = function(config) {
             loader: 'babel-loader'
           }
         ]
-      }
+      },
+      devtool: 'inline-source-map'
     }
   });
 };
