@@ -36,20 +36,26 @@ describe('nyuEshelfService', () => {
   });
 
   describe('initEshelf', () => {
-    let $httpBackend, urlMatch, mockToken;
+    let $httpBackend, urlMatch, mockToken, mockData;
     let tokenRequestHandler;
     beforeEach(inject(function(_$httpBackend_){
       $httpBackend = _$httpBackend_;
 
       mockToken = 'acbd123';
-
+      mockData = [
+        { external_id: 'nyu_12345'},
+        { external_id: 'nyu_54321'},
+        { external_id: 'nyu_abcd123'},
+        { external_id: 'nyu_xyz9876'},
+      ];
       let url = nyuEshelfConfig.defaultUrls.eshelfBaseUrl + "/records/from/primo.json";
       url = escapeRegExp(url);
       urlMatch = new RegExp(url);
 
       tokenRequestHandler = $httpBackend
                               .when('GET', urlMatch)
-                              .respond({data: 'mockData'}, {'x-csrf-token': mockToken });
+                              .respond(mockData,
+                              {'x-csrf-token': mockToken });
     }));
 
     beforeEach(() => {
@@ -84,6 +90,16 @@ describe('nyuEshelfService', () => {
 
       expect(console.error).toHaveBeenCalled();
       expect(nyuEshelfService.csrfToken).toEqual('');
+    });
+
+    it('should assign recordId props the service as true', () => {
+      $httpBackend.expectGET(urlMatch);
+      nyuEshelfService.initEshelf();
+      $httpBackend.flush();
+
+      mockData.forEach(item => {
+        expect(nyuEshelfService[item.external_id]).toBe(true);
+      });
     });
 
   }); // end initEshelf

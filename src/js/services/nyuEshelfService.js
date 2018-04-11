@@ -8,6 +8,7 @@ export default function(config, $http) {
     initEshelf() {
       let svc = this; // For maintaining service scoping in the function below
       // Eshelf API to setup csrfToken and avoid that pesky cache
+      // Eshelf API call also returns array of all eshelf records
       let url = config.envConfig.eshelfBaseUrl + "/records/from/primo.json?per=all&_=" + Date.now();
       // Get the csrfToken already
       $http.get(url).then(
@@ -16,6 +17,7 @@ export default function(config, $http) {
             svc.csrfToken = response.headers('x-csrf-token');
             svc.initialized = true;
 
+            // go through all the array records and add to service's dictionary
             response.data.forEach(item => {
               svc[item.external_id] = true;
             });
