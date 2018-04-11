@@ -5,7 +5,6 @@ describe('nyuEshelfToolbar component', () => {
   beforeEach(() => {
     mockServiceSpies = {
       initEshelf() {},
-      checkEshelf() {},
       generateRequest() {},
       failure() {},
       success() {}

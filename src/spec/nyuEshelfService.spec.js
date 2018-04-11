@@ -88,50 +88,6 @@ describe('nyuEshelfService', () => {
 
   }); // end initEshelf
 
-  describe('checkEshelf', () => {
-
-    let $httpBackend;
-    let eshelfRequestHandler;
-    let mockData, mockTargetRecord, url;
-    beforeEach(inject(function(_$httpBackend_){
-      $httpBackend = _$httpBackend_;
-
-      mockTargetRecord = 'acbd123';
-      mockData = ['x1', mockTargetRecord, 'x2', 'x3'];
-
-      url = nyuEshelfConfig.defaultUrls.eshelfBaseUrl + "/records/from/primo.json?per=all&external_id[]=" + mockTargetRecord;
-
-      eshelfRequestHandler = $httpBackend
-                                .when('GET', url)
-                                .respond(mockData);
-    }));
-
-    afterEach(() => {
-      $httpBackend.verifyNoOutstandingExpectation();
-      $httpBackend.verifyNoOutstandingRequest();
-    });
-
-    it('should add externalId key, set to true, if item found on server', () => {
-      $httpBackend.expectGET(url);
-
-      nyuEshelfService.checkEshelf(mockTargetRecord);
-      $httpBackend.flush();
-
-      expect(nyuEshelfService[mockTargetRecord]).toBe(true);
-    });
-
-    it('should add error key, set to true, if no response from Eshelf', () => {
-      eshelfRequestHandler.respond(401, '');
-      $httpBackend.expectGET(url);
-
-      nyuEshelfService.checkEshelf(mockTargetRecord);
-      $httpBackend.flush();
-
-      expect(nyuEshelfService[mockTargetRecord + '_error']).toBe(true);
-    });
-
-  }); // end checkEshelf
-
   describe('generateRequest', () => {
 
     let data, mockToken, url, headers;

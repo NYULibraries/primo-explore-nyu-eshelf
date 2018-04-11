@@ -5,7 +5,6 @@ describe('nyuEshelfToolbarController', () => {
   beforeEach(() => {
     mockServiceSpies = {
       initEshelf() {},
-      checkEshelf() {},
       generateRequest() {},
       failure() {},
       success() {}

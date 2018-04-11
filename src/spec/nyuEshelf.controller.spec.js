@@ -6,13 +6,11 @@ describe('nyuEshelfController', () => {
     const mockHttp = (req) => new Promise((_res, _rej) => {});
     spies = {
       initEshelf() {},
-      checkEshelf() {},
       generateRequest: (method, ) => ({ method: method.toUpperCase()}),
       failure() {},
       success() {},
       $http: () => mockHttp
     };
-    spyOn(spies, 'checkEshelf');
     spyOn(spies, 'generateRequest').and.callThrough();
     spyOn(spies, '$http').and.callThrough();
   });
@@ -121,10 +119,6 @@ describe('nyuEshelfController', () => {
 
       guestController.$onInit();
       expect(nyuEshelfService.loggedIn).toBe(false);
-    });
-
-    it('should invoke checkEshelf in nyuEshelfService', () => {
-      expect(spies.checkEshelf).toHaveBeenCalledWith(recordId);
     });
 
     it('should disable the input if $scope is running', () => {
