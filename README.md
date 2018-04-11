@@ -1,5 +1,9 @@
 # primo-explore-nyu-eshelf
 
+[![Build Status](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf.svg?branch=master)](https://travis-ci.org/NYULibraries/primo-explore-nyu-eshelf)
+[![npm version](https://img.shields.io/npm/v/primo-explore-nyu-eshelf.svg)](https://www.npmjs.com/package/primo-explore-nyu-eshelf)
+[![Coverage Status](https://coveralls.io/repos/github/NYULibraries/primo-explore-nyu-eshelf/badge.svg?branch=feature%2Finstanbul_coverage)](https://coveralls.io/github/NYULibraries/primo-explore-nyu-eshelf?branch=feature%2Finstanbul_coverage)
+
 ## Description
 
 Add custom NYU E-Shelf functionality.
@@ -66,6 +70,21 @@ app
   .component('prmSearchBookmarkFilterAfter', {
     template: '<nyu-eshelf-toolbar></nyu-eshelf-toolbar>'
   })
+```
+
+### Run block
+
+In order to initialize eShelf, a run block must also be added to the run block on the main app:
+
+```js
+app.run(runBlock);
+
+runBlock.$inject = ['nyuEshelfService'];
+
+function runBlock(nyuEshelfService) {
+  // other potential run operations...
+  nyuEshelfService.initEshelf();
+}
 ```
 
 ### Disable out of the box "Saved Records" functionality
