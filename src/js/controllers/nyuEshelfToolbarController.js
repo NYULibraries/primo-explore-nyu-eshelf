@@ -1,4 +1,4 @@
-export default function(nyuEshelfService, config, $scope) {
+export default function(config, $scope) {
 
   this.$onInit = () => {
     $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
