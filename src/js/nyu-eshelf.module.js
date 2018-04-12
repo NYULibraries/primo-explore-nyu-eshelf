@@ -51,8 +51,5 @@ angular
   // Setup a new button component to add to the topbar
   .component('nyuEshelfToolbar', {
     controller: 'nyuEshelfToolbarController',
-    require: {
-      primoExploreCtrl: '^primoExplore'
-    },
     template: nyuEshelfToolbarTemplate
   });
