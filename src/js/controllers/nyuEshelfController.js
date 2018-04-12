@@ -13,7 +13,7 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     // Build the pds url
     $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     // Disable the input if there is an error or the process is running
-    $scope.disabled = Boolean(!nyuEshelfService.intialized || nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
+    $scope.disabled = Boolean(!nyuEshelfService.initialized || nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
     // In eshelf?
     $scope.inEshelf = Boolean(nyuEshelfService[$scope.externalId]);
 
