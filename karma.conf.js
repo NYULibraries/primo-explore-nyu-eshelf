@@ -15,7 +15,7 @@ module.exports = function(config) {
     ],
     preprocessors: {
       'js/**/*.js': ['webpack', 'sourcemap'],
-      'spec/**/*.spec.js': ['babel'],
+      'spec/**/*.spec.js': ['babel', 'sourcemap'],
       'spec/fixtures/**/*.json': ['json_fixtures'],
     },
     jsonFixturesPreprocessor: {
