@@ -4,8 +4,7 @@
   ],
   "plugins": [
     "babel-plugin-transform-html-import-to-string",
-    "babel-plugin-transform-object-rest-spread",
-    "babel-plugin-istanbul"
+    "babel-plugin-transform-object-rest-spread"
   ],
   "sourceMaps": "both"
 }

@@ -25,4 +25,4 @@ export default {
     eshelfBaseUrl: 'https://eshelf.library.nyu.edu',
     institution: 'NYU'
   }
-}
+};
