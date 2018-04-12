@@ -27,8 +27,8 @@ describe('nyuEshelfController', () => {
     // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
     $provide.service('$http', spies.$http);
 
-    $provide.service('nyuEshelfService', ($http) => ({
-        initialized: false,
+    $provide.service('nyuEshelfService', () => ({
+        initialized: true, // default to intialized true
         csrfToken: '',
         loggedIn: false,
         ...spies
@@ -121,16 +121,24 @@ describe('nyuEshelfController', () => {
       expect(nyuEshelfService.loggedIn).toBe(false);
     });
 
-    it('should disable the input if $scope is running', () => {
+    it('should not be disabled normally', () => {
       expect($scope.disabled).toBe(false);
+    });
+
+    it('should be disabled if $scope is running', () => {
       $scope.running = true;
       controller.$onInit();
       expect($scope.disabled).toBe(true);
     });
 
-    it('should disable the input if an error was found', () => {
-      expect($scope.disabled).toBe(false);
+    it('should be disabled if an error was found', () => {
       nyuEshelfService[recordId + '_error'] = true;
+      controller.$onInit();
+      expect($scope.disabled).toBe(true);
+    });
+
+    it('should be disabled if eshelf not initialized', () => {
+      nyuEshelfService.initialized = false;
       controller.$onInit();
       expect($scope.disabled).toBe(true);
     });
