@@ -6,5 +6,6 @@
     "babel-plugin-transform-html-import-to-string",
     "babel-plugin-transform-object-rest-spread",
     "babel-plugin-istanbul"
-  ]
+  ],
+  "sourceMaps": "both"
 }

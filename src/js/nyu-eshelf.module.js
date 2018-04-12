@@ -47,12 +47,9 @@ angular
     template: nyuEshelfTemplate
   })
   // Controller for topbar 'my eshelf' button
-  .controller('nyuEshelfToolbarController', ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', nyuEshelfToolbarController])
+  .controller('nyuEshelfToolbarController', ['nyuEshelfConfigService', '$scope', nyuEshelfToolbarController])
   // Setup a new button component to add to the topbar
   .component('nyuEshelfToolbar', {
     controller: 'nyuEshelfToolbarController',
-    require: {
-      primoExploreCtrl: '^primoExplore'
-    },
     template: nyuEshelfToolbarTemplate
   });

@@ -13,7 +13,7 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     // Build the pds url
     $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     // Disable the input if there is an error or the process is running
-    $scope.disabled = Boolean(nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
+    $scope.disabled = Boolean(!nyuEshelfService.initialized || nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
     // In eshelf?
     $scope.inEshelf = Boolean(nyuEshelfService[$scope.externalId]);
 
@@ -26,7 +26,7 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
   };
   // Determine what text to show based on running status of the http call
   $scope.setElementText = () => {
-    if (nyuEshelfService[$scope.externalId+'_error']) {
+    if (nyuEshelfService[$scope.externalId+'_error'] || !nyuEshelfService.initialized) {
       return config.error;
     } else if (nyuEshelfService[$scope.externalId]) {
       return $scope.running ? config.deleting : $scope.inEshelfText;
@@ -48,8 +48,13 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     const request = nyuEshelfService.generateRequest(httpMethod, $scope.recordData);
     $http(request)
       .then(
-        function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId); },
-        function(response) { nyuEshelfService.failure(response, $scope.externalId); }
+        (response) => {
+          $scope.running = false;
+          nyuEshelfService.success(response, $scope.externalId);
+        },
+        (response) => {
+          nyuEshelfService.failure(response, $scope.externalId);
+        }
       );
   };
 }

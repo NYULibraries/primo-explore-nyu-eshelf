@@ -1,22 +1,30 @@
 const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
 
 describe('nyuEshelfController', () => {
+
+  const recordId = 'abcd123';
+  const mockRequestURL = 'eshelf.nyu.edu/';
+  const mockData = { "record": { "external_system": "primo", "external_id": recordId } };
   let spies;
   beforeEach(() => {
-    const mockHttp = (req) => new Promise((_res, _rej) => {});
     spies = {
       initEshelf() {},
-      generateRequest: (method, ) => ({ method: method.toUpperCase()}),
+      generateRequest: (method, data) => ({
+        method,
+        url: mockRequestURL,
+        headers: {},
+        data
+      }),
       failure() {},
       success() {},
-      $http: () => mockHttp
     };
+
     spyOn(spies, 'generateRequest').and.callThrough();
-    spyOn(spies, '$http').and.callThrough();
+    spyOn(spies, 'failure');
+    spyOn(spies, 'success');
   });
 
   beforeEach(module('nyuEshelf', function($provide) {
-
     $provide.service('nyuEshelfConfigService', () => {
       const config = angular.copy(nyuEshelfConfig);
       config.primoBaseUrl = "http://www.example.com:8080";
@@ -24,11 +32,8 @@ describe('nyuEshelfController', () => {
       return config;
     });
 
-    // Mocks $http to do nothing to avoid warnings. Http request tests handled in services.
-    $provide.service('$http', spies.$http);
-
-    $provide.service('nyuEshelfService', ($http) => ({
-        initialized: false,
+    $provide.service('nyuEshelfService', () => ({
+        initialized: true, // default to intialized true
         csrfToken: '',
         loggedIn: false,
         ...spies
@@ -36,14 +41,14 @@ describe('nyuEshelfController', () => {
     );
   }));
 
-  let $scope, $componentController;
+  let $scope, $componentController, $httpBackend;
   let controller, bindings;
   let nyuEshelfService;
-
-  const recordId = 'abcd123';
-  beforeEach(inject(function(_$rootScope_, _$componentController_, _nyuEshelfService_) {
+  let eshelfCreateHandler, eshelfDestroyHandler;
+  beforeEach(inject(function(_$rootScope_, _$componentController_, _nyuEshelfService_, _$httpBackend_) {
     $scope = _$rootScope_;
     $componentController = _$componentController_;
+    $httpBackend = _$httpBackend_;
     nyuEshelfService = _nyuEshelfService_;
 
     const primoExploreCtrl = {
@@ -73,6 +78,14 @@ describe('nyuEshelfController', () => {
       { $scope },
       bindings
     );
+
+    eshelfCreateHandler = $httpBackend
+                            .when('POST', mockRequestURL)
+                            .respond( mockData );
+
+    eshelfDestroyHandler = $httpBackend
+                            .when('DELETE', mockRequestURL)
+                            .respond( mockData );
   }));
 
   describe('$onInit', () => {
@@ -121,16 +134,24 @@ describe('nyuEshelfController', () => {
       expect(nyuEshelfService.loggedIn).toBe(false);
     });
 
-    it('should disable the input if $scope is running', () => {
+    it('should not be disabled normally', () => {
       expect($scope.disabled).toBe(false);
+    });
+
+    it('should be disabled if $scope is running', () => {
       $scope.running = true;
       controller.$onInit();
       expect($scope.disabled).toBe(true);
     });
 
-    it('should disable the input if an error was found', () => {
-      expect($scope.disabled).toBe(false);
+    it('should be disabled if an error was found', () => {
       nyuEshelfService[recordId + '_error'] = true;
+      controller.$onInit();
+      expect($scope.disabled).toBe(true);
+    });
+
+    it('should be disabled if eshelf not initialized', () => {
+      nyuEshelfService.initialized = false;
       controller.$onInit();
       expect($scope.disabled).toBe(true);
     });
@@ -219,41 +240,145 @@ describe('nyuEshelfController', () => {
     }); // end setElementText
 
     describe("addToEshelf", () => {
-      let data;
-      beforeEach(() => {
-        controller.$onInit();
-        $scope.addToEshelf();
-        data = { "record": { "external_system": "primo", "external_id": recordId } };
+      afterEach(() => {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
       });
 
       it("should use nyuEshelfService.generateRequest method", () => {
-        expect(spies.generateRequest).toHaveBeenCalledWith("post", data);
+        controller.$onInit();
+        $httpBackend.expectPOST(mockRequestURL);
+        $scope.addToEshelf();
+        $httpBackend.flush();
+
+        expect(spies.generateRequest).toHaveBeenCalledWith("post", mockData);
       });
 
-      it('should make an $http request', () => {
-        expect(spies['$http']).toHaveBeenCalled();
+      describe('on success', () => {
+        beforeEach(() => {
+          $httpBackend.expectPOST(mockRequestURL);
+          $scope.addToEshelf();
+          $httpBackend.flush();
+        });
+
+        afterEach(() => {
+          $httpBackend.verifyNoOutstandingExpectation();
+          $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should set $scope.running to false', () => {
+          expect($scope.running).toBe(false);
+        });
+
+        it('should call nyuEshelfService.success method', () => {
+          expect(spies.success).toHaveBeenCalled();
+        });
+      });
+
+      describe('on failure', () => {
+
+        beforeEach(() => {
+          eshelfCreateHandler.respond(401, '');
+          $httpBackend.expectPOST(mockRequestURL);
+          $scope.addToEshelf();
+          $httpBackend.flush();
+        });
+
+        afterEach(() => {
+          $httpBackend.verifyNoOutstandingExpectation();
+          $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should call nyuEshelfService.failure method', () => {
+          expect(spies.failure).toHaveBeenCalled();
+        });
       });
 
     });
 
     describe("removeFromEshelf", () => {
-      let data;
-      beforeEach(() => {
-        controller.$onInit();
-        $scope.removeFromEshelf();
-        data = { "record": { "external_system": "primo", "external_id": recordId } };
+      afterEach(() => {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
       });
 
       it("should use nyuEshelfService.generateRequest method", () => {
-        expect(spies.generateRequest).toHaveBeenCalledWith("delete", data);
+        controller.$onInit();
+        $httpBackend.expectDELETE(mockRequestURL);
+        $scope.removeFromEshelf();
+        $httpBackend.flush();
+
+        expect(spies.generateRequest).toHaveBeenCalledWith("delete", mockData);
       });
 
-      it('should make an $http request', () => {
-        expect(spies['$http']).toHaveBeenCalled();
+      describe('on success', () => {
+        beforeEach(() => {
+          $httpBackend.expectDELETE(mockRequestURL);
+          $scope.removeFromEshelf();
+          $httpBackend.flush();
+        });
+
+        afterEach(() => {
+          $httpBackend.verifyNoOutstandingExpectation();
+          $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should set $scope.running to false', () => {
+          expect($scope.running).toBe(false);
+        });
+
+        it('should call nyuEshelfService.success method', () => {
+          expect(spies.success).toHaveBeenCalled();
+        });
+
       });
 
+      describe('on failure', () => {
+
+        beforeEach(() => {
+          eshelfDestroyHandler.respond(401, '');
+          $httpBackend.expectDELETE(mockRequestURL);
+          $scope.removeFromEshelf();
+          $httpBackend.flush();
+        });
+
+        afterEach(() => {
+          $httpBackend.verifyNoOutstandingExpectation();
+          $httpBackend.verifyNoOutstandingRequest();
+        });
+
+        it('should call nyuEshelfService.failure method', () => {
+          expect(spies.failure).toHaveBeenCalled();
+        });
+      });
     });
 
-  }); // end $scope functions
+    describe('eshelfCheckBoxTrigger', () => {
+      beforeEach(() => {
+        spyOn($scope, 'removeFromEshelf');
+        spyOn($scope, 'addToEshelf');
+      });
 
+      it('should be defined', () => {
+        expect($scope.eshelfCheckBoxTrigger).toBeDefined();
+      });
+
+      it('should set $scope.running to true', () => {
+        $scope.eshelfCheckBoxTrigger();
+        expect($scope.running).toBe(true);
+      });
+
+      it('should addToEshelf if not in eshelf', () => {
+        $scope.inEshelf = false;
+        $scope.eshelfCheckBoxTrigger();
+        expect($scope.addToEshelf).toHaveBeenCalled();
+      });
+
+      it('should removeFromEshelf if not in eshelf', () => {
+        $scope.inEshelf = true;
+        $scope.eshelfCheckBoxTrigger();
+        expect($scope.removeFromEshelf).toHaveBeenCalled();
+      });
+    });
+  }); // end $scope functions
 });
