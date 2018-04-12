@@ -48,8 +48,13 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     const request = nyuEshelfService.generateRequest(httpMethod, $scope.recordData);
     $http(request)
       .then(
-        function(response) { $scope.running = false; nyuEshelfService.success(response, $scope.externalId); },
-        function(response) { nyuEshelfService.failure(response, $scope.externalId); }
+        (response) => {
+          $scope.running = false;
+          nyuEshelfService.success(response, $scope.externalId);
+        },
+        (response) => {
+          nyuEshelfService.failure(response, $scope.externalId);
+        }
       );
   };
 }

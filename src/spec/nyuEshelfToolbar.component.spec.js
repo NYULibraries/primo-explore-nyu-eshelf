@@ -39,17 +39,9 @@ describe('nyuEshelfToolbar component', () => {
     const $rootScope = _$rootScope_;
     $scope = $rootScope.$new();
 
-    // by default, the user is logged in
-    const primoExploreCtrl = {
-      userSessionManagerService: {
-        isGuest() { return false; }
-      }
-    };
+    element = angular.element(`<nyu-eshelf-toolbar />`);
 
-    element = angular.element(`<div><nyu-eshelf-toolbar /></div>`);
-    element.data('$primoExploreController', primoExploreCtrl);
-
-    element = $compile(element)($scope).find('nyu-eshelf-toolbar');
+    element = $compile(element)($scope);
     $scope.$digest();
   }));
 
