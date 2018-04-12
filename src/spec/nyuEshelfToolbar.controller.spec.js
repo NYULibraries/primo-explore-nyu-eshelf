@@ -55,75 +55,42 @@ describe('nyuEshelfToolbarController', () => {
       { $scope },
       bindings
     );
+    controller.$onInit();
   }));
 
   describe('$onInit', () => {
+    beforeEach(() => {
+    });
 
-    describe('when logged in', () => {
+    it('should assign myEshelfButtonClasses', () => {
+      expect($scope.myEshelfButtonClasses).toEqual(config.myEshelfButtonClasses);
+    });
+
+    it('should assign appropriate elementText', () => {
+      expect($scope.elementText).toEqual(config.myEshelf);
+    });
+
+    it('should assign eshelfUrl', () => {
+      const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
+      expect($scope.eshelfUrl).toEqual(url);
+    });
+
+    describe('$scope.openEshelf', () => {
+
       beforeEach(() => {
-        controller.$onInit();
+        spyOn(window, 'open');
       });
 
-      it('should assign the appropriate loggedIn value', () => {
-        expect($scope.loggedIn).toBe(true);
+      it('should be defined', () => {
+        expect($scope.openEshelf).toBeDefined();
       });
 
-      it('should assign myEshelfButtonClasses', () => {
-        expect($scope.myEshelfButtonClasses).toEqual(config.myEshelfButtonClasses);
-      });
-
-      it('should assign appropriate elementText', () => {
-        expect($scope.elementText).toEqual(config.myEshelf);
-      });
-
-      it('should assign eshelfUrl', () => {
+      it('should open the eshelfUrl in a new window', () => {
         const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
-        expect($scope.eshelfUrl).toEqual(url);
-      });
-
-      describe('$scope.openEshelf', () => {
-
-        beforeEach(() => {
-          spyOn(window, 'open');
-        });
-
-        it('should be defined', () => {
-          expect($scope.openEshelf).toBeDefined();
-        });
-
-        it('should open the eshelfUrl in a new window', () => {
-          const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
-          $scope.openEshelf();
-          expect(window.open).toHaveBeenCalledWith(url, '_blank');
-        });
-
+        $scope.openEshelf();
+        expect(window.open).toHaveBeenCalledWith(url, '_blank');
       });
     });
-
-    describe('when guest', () => {
-      let $guestScope, $guestController;
-      beforeEach(() => {
-        // build guest controller
-        const guestBindings = angular.copy(bindings);
-        guestBindings.primoExploreCtrl.userSessionManagerService.isGuest = () => true;
-        $guestScope = $scope.$new();
-        $guestController = $componentController(
-          'nyuEshelfToolbar',
-          { $scope: $guestScope },
-          guestBindings
-        );
-        $guestController.$onInit();
-      });
-
-      it('should assign appropriate loggedIn value', () => {
-        expect($guestScope.loggedIn).toBe(false);
-      });
-
-      it('should assign appropriate elementText', () => {
-        expect($guestScope.elementText).toEqual(config.guestEshelf);
-      });
-    });
-
   });
 
 });
