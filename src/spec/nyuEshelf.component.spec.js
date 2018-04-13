@@ -91,15 +91,15 @@ describe('nyuEshelf component', () => {
         expect(checkbox.getAttribute("ng-click")).toEqual("eshelfCheckBoxTrigger()");
       });
 
-      it('should have disabled directive', () => {
-        expect(checkbox.getAttribute("ng-disabled")).toEqual("disabled");
+      it('should have disabled directive with attribute disabled()', () => {
+        expect(checkbox.getAttribute("ng-disabled")).toEqual("disabled()");
       });
 
       it('should have data attribute to record ID', () => {
         expect(checkbox.getAttribute("data-eshelf-external-id")).toEqual(elementId);
       });
-      it('should have ng-checked directive set to model inEshelf', () => {
-        expect(checkbox.getAttribute("ng-checked")).toEqual("inEshelf");
+      it('should have ng-checked directive set to attribute inEshelf()', () => {
+        expect(checkbox.getAttribute("ng-checked")).toEqual("inEshelf()");
       });
     });
   });

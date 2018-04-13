@@ -135,31 +135,31 @@ describe('nyuEshelfController', () => {
     });
 
     it('should not be disabled normally', () => {
-      expect($scope.disabled).toBe(false);
+      expect($scope.disabled()).toBe(false);
     });
 
     it('should be disabled if $scope is running', () => {
       $scope.running = true;
       controller.$onInit();
-      expect($scope.disabled).toBe(true);
+      expect($scope.disabled()).toBe(true);
     });
 
     it('should be disabled if an error was found', () => {
       nyuEshelfService[recordId + '_error'] = true;
       controller.$onInit();
-      expect($scope.disabled).toBe(true);
+      expect($scope.disabled()).toBe(true);
     });
 
     it('should be disabled if eshelf not initialized', () => {
       nyuEshelfService.initialized = false;
       controller.$onInit();
-      expect($scope.disabled).toBe(true);
+      expect($scope.disabled()).toBe(true);
     });
 
     it('should assign inEshelf if in e-shelf', () => {
       nyuEshelfService[recordId] = true;
       controller.$onInit();
-      expect($scope.inEshelf).toBe(true);
+      expect($scope.inEshelf()).toBe(true);
     });
 
   });
@@ -369,13 +369,13 @@ describe('nyuEshelfController', () => {
       });
 
       it('should addToEshelf if not in eshelf', () => {
-        $scope.inEshelf = false;
+        $scope.inEshelf = () => false;
         $scope.eshelfCheckBoxTrigger();
         expect($scope.addToEshelf).toHaveBeenCalled();
       });
 
       it('should removeFromEshelf if not in eshelf', () => {
-        $scope.inEshelf = true;
+        $scope.inEshelf = () => true;
         $scope.eshelfCheckBoxTrigger();
         expect($scope.removeFromEshelf).toHaveBeenCalled();
       });
