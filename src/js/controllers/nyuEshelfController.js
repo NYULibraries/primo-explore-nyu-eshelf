@@ -13,9 +13,6 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
     // Build the pds url
     $scope.pdsUrl = config.envConfig.pdsUrl.base + "?func=load-login&calling_system=" + config.envConfig.pdsUrl.callingSystem + "&institute=" + config.envConfig.institution + "&url=" + config.primoBaseUrl + "/primo_library/libweb/pdsLogin?targetURL=" + $window.encodeURIComponent($location.absUrl()) + "&from-new-ui=1&authenticationProfile=BASE_PROFILE";
     // Disable the input if there is an error or the process is running
-    $scope.disabled = Boolean(!nyuEshelfService.initialized || nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
-    // In eshelf?
-    $scope.inEshelf = Boolean(nyuEshelfService[$scope.externalId]);
 
     const inGuestText = config.inGuestEshelf +
       ((config.loginToSave && config.loginToSave != '') ?
@@ -24,7 +21,12 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
 
     $scope.inEshelfText = nyuEshelfService.loggedIn ? config.inEshelf : inGuestText;
   };
+
+  $scope.disabled = () => Boolean(!nyuEshelfService.initialized || nyuEshelfService[$scope.externalId+'_error'] || $scope.running);
+  // In eshelf?
+  $scope.inEshelf = () => Boolean(nyuEshelfService[$scope.externalId]);
   // Determine what text to show based on running status of the http call
+
   $scope.setElementText = () => {
     if (nyuEshelfService[$scope.externalId+'_error'] || !nyuEshelfService.initialized) {
       return config.error;
@@ -37,7 +39,7 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
   // Toggle the \ function on the input element
   $scope.eshelfCheckBoxTrigger = () => {
     $scope.running = true;
-    ($scope.inEshelf) ? $scope.removeFromEshelf() : $scope.addToEshelf();
+    ($scope.inEshelf()) ? $scope.removeFromEshelf() : $scope.addToEshelf();
   };
   // Alias to add
   $scope.addToEshelf = () => { $scope.toggleInEshelf('post'); };
