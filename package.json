@@ -1,6 +1,6 @@
 {
   "name": "primo-explore-nyu-eshelf",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "ExLibris Primo New UI plugin for adding custom NYU E-Shelf functionality",
   "main": "./dist/index.js",
   "scripts": {
