@@ -3,9 +3,15 @@
     "es2015"
   ],
   "plugins": [
-    "babel-plugin-transform-html-import-to-string",
-    "babel-plugin-transform-object-rest-spread",
-    "istanbul"
+    "babel-plugin-transform-html-import-to-string"
   ],
+  "env": {
+    "development": {
+      "plugins": [
+        "babel-plugin-transform-object-rest-spread",
+        "istanbul"
+      ],
+    }
+  },
   "sourceMaps": "both"
 }

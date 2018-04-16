@@ -9,8 +9,7 @@
     "copy-css": "cp -r src/css/ dist/css/",
     "babelify": "yarn babel src --out-dir dist --ignore *.spec.js,coverage",
     "build": "yarn babelify; yarn copy-css",
-    "build:watch": "yarn build --watch",
-    "prepare": "yarn build"
+    "prepare": "BABEL_ENV=production yarn build"
   },
   "repository": {
     "type": "git",
