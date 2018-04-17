@@ -1,4 +1,4 @@
-export default {
+export default Object.freeze({
   myEshelfButtonClasses: 'button-over-dark',
   toolbar: "e-Shelf",
   addToEshelf: "Add to e-Shelf",
@@ -24,4 +24,4 @@ export default {
     eshelfBaseUrl: 'https://eshelf.library.nyu.edu',
     institution: 'NYU'
   }
-};
+});
