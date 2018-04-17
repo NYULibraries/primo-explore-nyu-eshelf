@@ -20,10 +20,6 @@ describe('nyuEshelf component', () => {
       return config;
     });
 
-    // mocks http to do nothign to avoid warnings
-    const mockHttp = (req) => new Promise((_res, _rej) => {});
-    $provide.service('$http', () => mockHttp);
-
     $provide.service('nyuEshelfService', () => ({
         initialized: false,
         csrfToken: '',
