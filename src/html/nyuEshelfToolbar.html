@@ -1,6 +1,6 @@
-<md-button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{ myEshelfButtonClasses }}" type="button" aria-label="Go to e-shelf" ng-click="openEshelf()">
-  <md-tooltip md-direction="bottom" md-delay="500">Go to e-shelf</md-tooltip>
-  <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to e-shelf">
+<md-button class="button-with-icon zero-margin md-button md-primoExplore-theme md-ink-ripple {{ myEshelfButtonClasses }}" type="button" aria-label="Go to {{ toolbar }}" ng-click="openEshelf()">
+  <md-tooltip md-direction="bottom" md-delay="500">Go to {{ toolbar }}</md-tooltip>
+  <prm-icon style="z-index:1" icon-type="svg" svg-icon-set="image" icon-definition="ic_collections_bookmark_24px" aria-label="Go to {{ toolbar }}">
   </prm-icon>
-  <span class="hide-xs">e-shelf</span>
+  <span class="hide-xs">{{ toolbar }}</span>
 </md-button>

@@ -25,8 +25,6 @@ describe('nyuEshelfToolbarController', () => {
   }));
 
   describe('$onInit', () => {
-    beforeEach(() => {
-    });
 
     it('should assign myEshelfButtonClasses', () => {
       expect($scope.myEshelfButtonClasses).toEqual(config.myEshelfButtonClasses);
@@ -39,6 +37,11 @@ describe('nyuEshelfToolbarController', () => {
     it('should assign eshelfUrl', () => {
       const url = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
       expect($scope.eshelfUrl).toEqual(url);
+    });
+
+    it('should assign appropriate toolbar text', () => {
+      const toolbar = nyuEshelfConfig.toolbar;
+      expect($scope.toolbar).toEqual(toolbar);
     });
 
     describe('$scope.openEshelf', () => {

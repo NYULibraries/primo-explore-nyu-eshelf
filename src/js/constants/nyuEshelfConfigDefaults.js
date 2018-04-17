@@ -1,7 +1,6 @@
 export default {
   myEshelfButtonClasses: 'button-over-dark',
-  myEshelf: 'My e-Shelf',
-  guestEshelf: 'Guest e-Shelf',
+  toolbar: "e-Shelf",
   addToEshelf: "Add to e-Shelf",
   inEshelf: "In e-Shelf",
   inGuestEshelf: "In guest e-Shelf",

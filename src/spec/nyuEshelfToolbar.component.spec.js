@@ -19,10 +19,6 @@ describe('nyuEshelfToolbar component', () => {
       return config;
     });
 
-    // mocks http to do nothign to avoid warnings
-    const mockHttp = (req) => new Promise((res, req) => {});
-    $provide.service('$http', () => mockHttp);
-
     $provide.service('nyuEshelfService', () => ({
         initialized: false,
         csrfToken: '',
@@ -45,11 +41,12 @@ describe('nyuEshelfToolbar component', () => {
     $scope.$digest();
   }));
 
+  let button;
+  beforeEach(() => {
+    button = element.find('md-button')[0];
+  });
+
   describe('template layout', () => {
-    let button;
-    beforeEach(() => {
-      button = element.find('md-button')[0];
-    });
 
     it('should be a single md-button', () => {
       expect(element.length).toEqual(1);
@@ -64,6 +61,14 @@ describe('nyuEshelfToolbar component', () => {
     it('should add the config classes to the button', () => {
       const classes = button.className;
       expect(classes).toContain(nyuEshelfConfig.myEshelfButtonClasses);
+    });
+  });
+
+  describe('toolbar text', () => {
+    it('should contain toolbar text', () => {
+      const toolbarText = nyuEshelfConfig.toolbar;
+      expect(button.innerText).toContain(toolbarText);
+      expect(button.innerText).toContain("Go to " + toolbarText);
     });
   });
 });

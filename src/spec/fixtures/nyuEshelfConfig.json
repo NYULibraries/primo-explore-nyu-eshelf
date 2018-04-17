@@ -1,5 +1,6 @@
 {
   "myEshelfButtonClasses": "button-over-dark",
+  "toolbar": "temporary e-shelf",
   "addToEshelf": "Add to e-Shelf",
   "inEshelf": "In e-Shelf",
   "inGuestEshelf": "In guest e-Shelf",

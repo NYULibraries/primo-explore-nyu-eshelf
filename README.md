@@ -121,8 +121,7 @@ You'll need to configure the module by passing it an object as an angular `const
 | name | type | usage |
 |------|-------------|--------|
 | `myEshelfButtonClasses` | string | css classes for the 'my e-shelf' button in the toolbar |
-| `myEshelf` | string | text for toolbar link when user is signed in |
-| `guestEshelf` | string | text for toolbar link when user is signed out |
+| `toolbar` | string | text for toolbar link |
 | `addToEshelf` | string | text for checkbox label when record is not in e-shelf |
 | `inEshelf` | string | text for checkbox label when record is in e-shelf and user is signed in |
 | `inGuestEshelf` | string | text for checkbox label when record is in e-shelf and user is signed out |
