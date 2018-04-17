@@ -1,30 +1,36 @@
-const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
-
 describe('nyuEshelfConfigService', () => {
+  let nyuEshelfConfigDefaults;
+  let nyuEshelfDeprecatedConfig;
+  beforeEach(() => {
+    nyuEshelfConfigDefaults = __fixtures__['nyuEshelfConfig'];
+    nyuEshelfDeprecatedConfig = __fixtures__['nyuEshelfDeprecatedConfig'];
+    Object.freeze(nyuEshelfConfigDefaults);
+    Object.freeze(nyuEshelfConfigDefaults);
+  });
+
+  beforeEach(() => {
+    spyOn(console, "warn");
+  });
 
   describe('with no custom configuration', () => {
-    beforeEach(() => {
-      module('nyuEshelf', $provide => {
-        $provide.constant('nyuEshelfConfig', {});
-      });
-    });
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.constant('nyuEshelfConfigDefaults', nyuEshelfConfigDefaults);
+      $provide.constant('nyuEshelfConfig', {});
+    }));
 
     let nyuEshelfConfigService;
-    beforeEach(() => {
-      inject((_nyuEshelfConfigService_) => {
-        nyuEshelfConfigService = _nyuEshelfConfigService_;
-      });
-    });
+    beforeEach(inject((_nyuEshelfConfigService_) => {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
 
-    // TODO: This test is not passing consistently. Figure out new way to implement;
-    // it('should contain default properties', () => {
-    //   const { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error } = nyuEshelfConfig;
-    //   const defaults = { myEshelfButtonClasses, myEshelf, guestEshelf, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error };
-    //
-    //   for (const key in defaults) {
-    //     expect(nyuEshelfConfigService[key]).toEqual(defaults[key]);
-    //   }
-    // });
+    it('should contain default properties', () => {
+      const { myEshelfButtonClasses, toolbar, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error } = nyuEshelfConfigDefaults;
+      const defaults = { myEshelfButtonClasses, toolbar, addToEshelf, inEshelf, inGuestEshelf, loginToSave, adding, deleting, error };
+
+      for (const key in defaults) {
+        expect(nyuEshelfConfigService[key]).toEqual(defaults[key]);
+      }
+    });
 
     it('should merge defaultUrls', () => {
       const defaultUrls = {
@@ -40,7 +46,7 @@ describe('nyuEshelfConfigService', () => {
     });
 
 
-    it('should construct primoBaseUrl', () => {
+    it('should construct primoBaseUrl from host & port', () => {
       const primoBaseUrl = "http://server:80";
       expect(nyuEshelfConfigService.primoBaseUrl).toEqual(primoBaseUrl);
     });
@@ -48,29 +54,24 @@ describe('nyuEshelfConfigService', () => {
   });
 
   describe('when utilizing on host', () => {
-
-    beforeEach(() => {
-      module('nyuEshelf', $provide => {
-        $provide.service('$location', () => {
-          return {
-            protocol: () => "http",
-            host: () => "bobcat.library.nyu.edu",
-            port: () => "80"
-          };
-        });
-        $provide.constant('nyuEshelfConfig', {});
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.service('$location', () => {
+        return {
+          protocol: () => "http",
+          host: () => "bobcat.library.nyu.edu",
+          port: () => "80"
+        };
       });
-    });
+      $provide.constant('nyuEshelfConfigDefaults', nyuEshelfConfigDefaults);
+      $provide.constant('nyuEshelfConfig', {});
+    }));
 
     let nyuEshelfConfigService;
-    beforeEach(() => {
-      inject(function(_nyuEshelfConfigService_) {
-        nyuEshelfConfigService = _nyuEshelfConfigService_;
-      });
-    });
+    beforeEach(inject((_nyuEshelfConfigService_) => {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
 
     it('should use specified URLs', () => {
-
       const defaultHost = {
         pdsUrl: {
           base: 'https://pds.library.nyu.edu/pds',
@@ -87,29 +88,27 @@ describe('nyuEshelfConfigService', () => {
   describe('with custom configuration', () => {
     let customConfig;
     beforeEach(() => {
-      const customMessages = {
-        myEshelf: 'My custom e-shelf',
+      const customValues = {
         adding: 'Adding to custom e-shelf...',
-        error: 'My custom error'
+        error: 'My custom error',
       };
 
-      customConfig = angular.copy(nyuEshelfConfig);
-      customConfig = angular.merge(customConfig, customMessages);
+      customConfig = Object.assign({}, nyuEshelfConfigDefaults);
+      Object.assign(customConfig, customValues);
+
+      // delete deeply nested values
       delete customConfig["bobcat.library.nyu.edu"];
     });
 
-    beforeEach(() => {
-      module('nyuEshelf', $provide => {
-        $provide.constant('nyuEshelfConfig', customConfig);
-      });
-    });
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.constant('nyuEshelfConfigDefaults', customConfig);
+      $provide.constant('nyuEshelfConfig', customConfig);
+    }));
 
     let nyuEshelfConfigService;
-    beforeEach(() => {
-      inject(function(_nyuEshelfConfigService_) {
-        nyuEshelfConfigService = _nyuEshelfConfigService_;
-      });
-    });
+    beforeEach(inject((_nyuEshelfConfigService_) => {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
 
     it('should merge custom properties into config', () => {
       for (const key in customConfig) {
@@ -118,5 +117,25 @@ describe('nyuEshelfConfigService', () => {
     });
 
   }); // end custom configuration
+
+  describe("with deprecated 'guestEshelf' implementation", () => {
+    beforeEach(module('nyuEshelf', $provide => {
+      $provide.constant('nyuEshelfConfigDefaults', nyuEshelfConfigDefaults);
+      $provide.constant('nyuEshelfConfig', nyuEshelfDeprecatedConfig);
+    }));
+
+    let nyuEshelfConfigService;
+    beforeEach(inject((_nyuEshelfConfigService_) => {
+      nyuEshelfConfigService = _nyuEshelfConfigService_;
+    }));
+
+    it('should assign guestEshelf value to toolbar', () => {
+      expect(nyuEshelfConfigService.toolbar).toEqual(nyuEshelfDeprecatedConfig.guestEshelf);
+    });
+
+    it('should include a deprecation warning', () => {
+      expect(console.warn).toHaveBeenCalled();
+    });
+  });
 
 });
