@@ -1,4 +1,4 @@
 src/
 .*
 karma.conf.js
-yar-error.log
+yarn-error.log

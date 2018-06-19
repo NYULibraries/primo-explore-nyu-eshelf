@@ -10,7 +10,7 @@
       "plugins": [
         "babel-plugin-transform-object-rest-spread",
         "istanbul"
-      ],
+      ]
     }
   },
   "sourceMaps": "both"
