@@ -1,4 +1,5 @@
-export default function(defaults, config, $location) {
+nyuEshelfConfigService.$inject = ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', '$location']
+function nyuEshelfConfigService(defaults, config, $location) {
   // Merge default config values with local configs
   // Note: Be aware that angular.merge is deprecated and will not work in > 2
   let mergedConfig = {};
@@ -14,3 +15,5 @@ export default function(defaults, config, $location) {
   mergedConfig['envConfig'] = (typeof mergedConfig[$location.host()] === 'undefined') ? mergedConfig.defaultUrls : mergedConfig[$location.host()];
   return mergedConfig;
 }
+
+export default nyuEshelfConfigService;

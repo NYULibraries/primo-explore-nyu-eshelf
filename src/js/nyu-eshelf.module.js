@@ -17,7 +17,7 @@ angular
   // Name our module
   .module('nyuEshelf', ["ngSanitize"])
   // Set config for using CORS within module
-  .config(function($httpProvider) {
+  .config(['$httpProvider', function($httpProvider) {
     //Enable cross domain calls
     $httpProvider.defaults.useXDomain = true;
     //Enable passing of cookies for CORS calls
@@ -27,16 +27,16 @@ angular
     //Remove the header containing XMLHttpRequest used to identify ajax call
     //that would prevent CORS from working
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
-  })
+  }])
   // Constant for the defaults to all config values
   // Can be overriden with nyuEshelfConfig constant
   .constant('nyuEshelfConfigDefaults', nyuEshelfConfigDefaults)
   // Reuseable factory for setting config
-  .factory('nyuEshelfConfigService', ['nyuEshelfConfigDefaults', 'nyuEshelfConfig', '$location', nyuEshelfConfigService])
+  .factory('nyuEshelfConfigService', nyuEshelfConfigService)
   // Reusable factory for initiating an 'add to eshelf' input element
-  .factory('nyuEshelfService', ['nyuEshelfConfigService', '$http', nyuEshelfService])
+  .factory('nyuEshelfService', nyuEshelfService)
   // Controller for the eshelf input form component
-  .controller('nyuEshelfController', ['nyuEshelfService', 'nyuEshelfConfigService', '$rootScope', '$scope', '$http', '$location', '$window', nyuEshelfController])
+  .controller('nyuEshelfController', nyuEshelfController)
   // Setup an input element to toggle eshelf
   .component('nyuEshelf', {
     controller: 'nyuEshelfController',
@@ -47,7 +47,7 @@ angular
     template: nyuEshelfTemplate
   })
   // Controller for topbar 'my eshelf' button
-  .controller('nyuEshelfToolbarController', ['nyuEshelfConfigService', '$scope', nyuEshelfToolbarController])
+  .controller('nyuEshelfToolbarController', nyuEshelfToolbarController)
   // Setup a new button component to add to the topbar
   .component('nyuEshelfToolbar', {
     controller: 'nyuEshelfToolbarController',

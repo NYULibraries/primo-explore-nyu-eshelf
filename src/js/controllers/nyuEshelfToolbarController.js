@@ -1,5 +1,5 @@
-export default function(config, $scope) {
-
+nyuEshelfToolbarController.$inject = ['nyuEshelfConfigService', '$scope'];
+function nyuEshelfToolbarController(config, $scope) {
   this.$onInit = () => {
     $scope.myEshelfButtonClasses = config.myEshelfButtonClasses;
     $scope.eshelfUrl = config.envConfig.eshelfBaseUrl + "/?institution=" + config.envConfig.institution;
@@ -10,3 +10,4 @@ export default function(config, $scope) {
     window.open($scope.eshelfUrl, '_blank');
   };
 }
+export default nyuEshelfToolbarController;

@@ -1,4 +1,5 @@
-export default function(nyuEshelfService, config, $rootScope, $scope, $http, $location, $window) {
+nyuEshelfController.$inject = ['nyuEshelfService', 'nyuEshelfConfigService', '$scope', '$http', '$location', '$window'];
+function nyuEshelfController(nyuEshelfService, config, $scope, $http, $location, $window) {
   const ctrl = this;
 
   this.$onInit = () => {
@@ -60,3 +61,5 @@ export default function(nyuEshelfService, config, $rootScope, $scope, $http, $lo
       );
   };
 }
+
+export default nyuEshelfController;
