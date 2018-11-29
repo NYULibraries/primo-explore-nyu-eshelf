@@ -1,4 +1,5 @@
-export default function(config, $http) {
+nyuEshelfController.$inject = ['nyuEshelfConfigService', '$http'];
+function nyuEshelfController(config, $http) {
   return {
     initialized: false, // Is the csrfToken initialized on first load of the page?
     csrfToken: '', // Storage spot for the csrfToken
@@ -60,3 +61,5 @@ export default function(config, $http) {
     }
   };
 }
+
+export default nyuEshelfController;
