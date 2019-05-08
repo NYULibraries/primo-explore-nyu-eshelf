@@ -6,3 +6,8 @@ prm-topbar prm-search-bookmark-filter-after button.md-button.search-bookmark-fil
 prm-topbar prm-search-bookmark-filter-after button.md-button.search-bookmark-filter-item:hover {
   box-shadow: 0 1px 0 #888888;
 }
+/* Flush eshelf checkbox left */
+div.nyu-eshelf input[type='checkbox'][id^='eshelf_'] {
+  margin-right: .35em;
+  margin-left: 0
+}
