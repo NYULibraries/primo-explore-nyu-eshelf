@@ -1,4 +1,4 @@
-{
+module.exports = {
   "myEshelfButtonClasses": "button-over-dark search-bookmark-filter-item",
   "guestEshelf": "Temporary e-Shelf",
   "inGuestEshelf": "In temporary e-Shelf",
@@ -9,4 +9,4 @@
   "bobcat.library.nyu.edu": {
     "institution": "BHS"
   }
-}
+};

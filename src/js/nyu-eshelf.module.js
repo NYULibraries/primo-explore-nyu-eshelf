@@ -1,3 +1,5 @@
+import 'angular-sanitize';
+
 //html templates
 import nyuEshelfTemplate from '../html/nyuEshelf.html';
 import nyuEshelfToolbarTemplate from '../html/nyuEshelfToolbar.html';
@@ -15,7 +17,7 @@ import nyuEshelfConfigDefaults from './constants/nyuEshelfConfigDefaults.js';
 
 angular
   // Name our module
-  .module('nyuEshelf', ["ngSanitize"])
+  .module('nyuEshelf', ['ngSanitize'])
   // Set config for using CORS within module
   .config(['$httpProvider', function($httpProvider) {
     //Enable cross domain calls

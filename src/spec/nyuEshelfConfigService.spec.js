@@ -2,8 +2,8 @@ describe('nyuEshelfConfigService', () => {
   let nyuEshelfConfigDefaults;
   let nyuEshelfDeprecatedConfig;
   beforeEach(() => {
-    nyuEshelfConfigDefaults = __fixtures__['nyuEshelfConfig'];
-    nyuEshelfDeprecatedConfig = __fixtures__['nyuEshelfDeprecatedConfig'];
+    nyuEshelfConfigDefaults = require('./fixtures/nyuEshelfConfig');;
+    nyuEshelfDeprecatedConfig = require('./fixtures/nyuEshelfDeprecatedConfig');;
     Object.freeze(nyuEshelfConfigDefaults);
     Object.freeze(nyuEshelfConfigDefaults);
   });
