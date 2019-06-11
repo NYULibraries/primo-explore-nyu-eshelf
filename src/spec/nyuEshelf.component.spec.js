@@ -1,4 +1,4 @@
-const nyuEshelfConfig = __fixtures__['nyuEshelfConfig'];
+const nyuEshelfConfig = require('./fixtures/nyuEshelfConfig');
 
 describe('nyuEshelf component', () => {
 
