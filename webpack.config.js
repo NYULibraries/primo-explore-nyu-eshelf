@@ -1,42 +1,33 @@
 const path = require('path');
-const merge = require('webpack-merge');
 
-const commonConfig = {
+const webpackConfig = {
   entry: {
     index: path.resolve(__dirname, 'src/index.js'),
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      loader: 'babel-loader'
-    }]
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.html$/,
+        loader: 'raw-loader',
+        exclude: /node_modules/,
+      }
+    ]
   },
   devtool: 'sourcemap',
-};
-
-const webConfig = {
-  target: 'web',
   output: {
-    filename: 'primoExploreNyuEshelf.min.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index.js',
     library: 'primoExploreNyuEshelf',
-    libraryTarget: 'var',
+    libraryTarget: 'umd',
+    libraryExport: 'default',
+    // see: https://github.com/webpack/webpack/issues/6522
+    globalObject: 'typeof self !== \'undefined\' ? self : this'
   },
 };
 
-const nodeConfig = {
-  target: 'node',
-  output: {
-    library: 'primoExploreNyuEshelf',
-  },
-};
-
-module.exports = [
-  merge.smart(
-    commonConfig,
-    webConfig,
-  ),
-  merge.smart(
-    commonConfig,
-    nodeConfig
-  ),
-];
+module.exports = webpackConfig;

@@ -1,4 +1,4 @@
-const nyuEshelfConfig = require('./fixtures/nyuEshelfConfig');
+import nyuEshelfConfig from './fixtures/nyuEshelfConfig';
 
 describe('nyuEshelfToolbar component', () => {
   let mockServiceSpies;
@@ -29,7 +29,6 @@ describe('nyuEshelfToolbar component', () => {
   }));
 
   let element, $scope, $compile;
-  const elementId = 'abcd123';
   beforeEach(inject(function(_$compile_, _$rootScope_) {
     $compile = _$compile_;
     const $rootScope = _$rootScope_;

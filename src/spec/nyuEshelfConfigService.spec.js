@@ -1,13 +1,7 @@
-describe('nyuEshelfConfigService', () => {
-  let nyuEshelfConfigDefaults;
-  let nyuEshelfDeprecatedConfig;
-  beforeEach(() => {
-    nyuEshelfConfigDefaults = require('./fixtures/nyuEshelfConfig');;
-    nyuEshelfDeprecatedConfig = require('./fixtures/nyuEshelfDeprecatedConfig');;
-    Object.freeze(nyuEshelfConfigDefaults);
-    Object.freeze(nyuEshelfConfigDefaults);
-  });
+import nyuEshelfConfigDefaults from './fixtures/nyuEshelfConfig';
+import nyuEshelfDeprecatedConfig from './fixtures/nyuEshelfDeprecatedConfig';
 
+describe('nyuEshelfConfigService', () => {
   beforeEach(() => {
     spyOn(console, "warn");
   });

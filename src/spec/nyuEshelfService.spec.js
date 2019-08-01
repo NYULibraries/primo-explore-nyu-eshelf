@@ -3,10 +3,9 @@ function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
 }
 
-const nyuEshelfConfig = require('./fixtures/nyuEshelfConfig');
+import nyuEshelfConfig from './fixtures/nyuEshelfConfig';
 
 describe('nyuEshelfService', () => {
-
   beforeEach(module('nyuEshelf', $provide => {
     $provide.service('nyuEshelfConfigService', () => {
       const config = angular.copy(nyuEshelfConfig);
