@@ -6,7 +6,6 @@ function escapeRegExp(str) {
 const nyuEshelfConfig = require('./fixtures/nyuEshelfConfig');
 
 describe('nyuEshelfService', () => {
-
   beforeEach(module('nyuEshelf', $provide => {
     $provide.service('nyuEshelfConfigService', () => {
       const config = angular.copy(nyuEshelfConfig);

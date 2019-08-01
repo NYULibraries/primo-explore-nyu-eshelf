@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   myEshelfButtonClasses: "button-over-dark",
   toolbar: "temporary e-shelf",
   addToEshelf: "Add to e-Shelf",

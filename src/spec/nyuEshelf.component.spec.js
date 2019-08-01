@@ -1,4 +1,4 @@
-const nyuEshelfConfig = require('./fixtures/nyuEshelfConfig');
+import nyuEshelfConfig from './fixtures/nyuEshelfConfig';
 
 describe('nyuEshelf component', () => {
 

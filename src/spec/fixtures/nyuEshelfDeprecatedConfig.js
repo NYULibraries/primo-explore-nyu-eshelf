@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   "myEshelfButtonClasses": "button-over-dark search-bookmark-filter-item",
   "guestEshelf": "Temporary e-Shelf",
   "inGuestEshelf": "In temporary e-Shelf",
