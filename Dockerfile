@@ -1,4 +1,4 @@
-FROM quay.io/nyulibraries/chromium_headless_node:10-chromium_latest
+FROM quay.io/nyulibraries/chromium_headless_node:12-chromium_latest
 ENV INSTALL_PATH /app/
 
 # Install node_modules with yarn
