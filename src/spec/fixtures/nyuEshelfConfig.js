@@ -2,6 +2,7 @@ export default {
   myEshelfButtonClasses: "button-over-dark",
   toolbar: "temporary e-shelf",
   addToEshelf: "Add to e-Shelf",
+  ariaLabel: "Toggle in Saved Items",
   inEshelf: "In e-Shelf",
   inGuestEshelf: "In guest e-Shelf",
   loginToSave: "login to save permanently",
@@ -11,17 +12,17 @@ export default {
   defaultUrls: {
     pdsUrl: {
       base: "https://pdsdev.library.nyu.edu/pds",
-      callingSystem: "primo"
+      callingSystem: "primo",
     },
     eshelfBaseUrl: "https://qa.eshelf.library.nyu.edu",
-    institution: "NYU"
+    institution: "NYU",
   },
   ["bobcat.library.nyu.edu"]: {
     pdsUrl: {
       base: "https://pds.library.nyu.edu/pds",
-      callingSystem: "primo"
+      callingSystem: "primo",
     },
     eshelfBaseUrl: "https://eshelf.library.nyu.edu",
-    institution: "NYU"
-  }
+    institution: "NYU",
+  },
 };
