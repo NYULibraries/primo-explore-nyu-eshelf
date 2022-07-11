@@ -2,7 +2,6 @@ export default {
   myEshelfButtonClasses: "button-over-dark",
   toolbar: "temporary e-shelf",
   addToEshelf: "Add to e-Shelf",
-  ariaLabel: "Toggle in Saved Items",
   inEshelf: "In e-Shelf",
   inGuestEshelf: "In guest e-Shelf",
   loginToSave: "login to save permanently",

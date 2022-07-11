@@ -26,7 +26,6 @@ function nyuEshelfController(
       (ctrl.prmSearchResultAvailabilityLineCtrl.isFullView
         ? "_full"
         : "_brief");
-    $scope.ariaLabel = config.ariaLabel;
     // JSON that eshelf is expecting
     $scope.recordData = {
       record: { external_system: "primo", external_id: $scope.externalId },

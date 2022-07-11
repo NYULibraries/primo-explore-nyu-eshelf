@@ -2,7 +2,6 @@ export default Object.freeze({
   myEshelfButtonClasses: "button-over-dark",
   toolbar: "e-Shelf",
   addToEshelf: "Add to e-Shelf",
-  ariaLabel: "Toggle in Saved Items",
   inEshelf: "In e-Shelf",
   inGuestEshelf: "In guest e-Shelf",
   loginToSave: "login to save permanently",
