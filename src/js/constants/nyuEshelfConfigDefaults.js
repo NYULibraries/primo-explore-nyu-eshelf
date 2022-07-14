@@ -1,5 +1,5 @@
 export default Object.freeze({
-  myEshelfButtonClasses: 'button-over-dark',
+  myEshelfButtonClasses: "button-over-dark",
   toolbar: "e-Shelf",
   addToEshelf: "Add to e-Shelf",
   inEshelf: "In e-Shelf",
@@ -10,18 +10,18 @@ export default Object.freeze({
   error: "Could not connect to e-Shelf",
   defaultUrls: {
     pdsUrl: {
-      base: 'https://pdsdev.library.nyu.edu/pds',
-      callingSystem: 'primo'
+      base: "https://pdsdev.library.nyu.edu/pds",
+      callingSystem: "primo",
     },
-    eshelfBaseUrl: 'https://qa.eshelf.library.nyu.edu',
-    institution: 'NYU'
+    eshelfBaseUrl: "https://qa.eshelf.library.nyu.edu",
+    institution: "NYU",
   },
   "bobcat.library.nyu.edu": {
     pdsUrl: {
-      base: 'https://pds.library.nyu.edu/pds',
-      callingSystem: 'primo'
+      base: "https://pds.library.nyu.edu/pds",
+      callingSystem: "primo",
     },
-    eshelfBaseUrl: 'https://eshelf.library.nyu.edu',
-    institution: 'NYU'
-  }
+    eshelfBaseUrl: "https://eshelf.library.nyu.edu",
+    institution: "NYU",
+  },
 });

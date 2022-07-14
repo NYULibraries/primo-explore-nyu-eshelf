@@ -11,17 +11,17 @@ export default {
   defaultUrls: {
     pdsUrl: {
       base: "https://pdsdev.library.nyu.edu/pds",
-      callingSystem: "primo"
+      callingSystem: "primo",
     },
     eshelfBaseUrl: "https://qa.eshelf.library.nyu.edu",
-    institution: "NYU"
+    institution: "NYU",
   },
   ["bobcat.library.nyu.edu"]: {
     pdsUrl: {
       base: "https://pds.library.nyu.edu/pds",
-      callingSystem: "primo"
+      callingSystem: "primo",
     },
     eshelfBaseUrl: "https://eshelf.library.nyu.edu",
-    institution: "NYU"
-  }
+    institution: "NYU",
+  },
 };
